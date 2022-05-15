@@ -2,9 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  Link,
+  Outlet
 } from "react-router-dom";
 import { CategoriasAPI } from "./api";
+import { VscTrash, VscEdit, VscAdd, VscClose } from "react-icons/vsc";
 
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
