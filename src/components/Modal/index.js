@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { VscClose } from "react-icons/vsc";
+import "./index.css";
 
 const ModalContainer = styled.div `
   position: fixed;
@@ -9,6 +10,8 @@ const ModalContainer = styled.div `
   left: 0; 
   right: 0; 
   z-index: 100;
+
+  display: ${props => props.open ? "block" : "none"};
 `;
 
 const Backdrop = styled.div `
@@ -20,12 +23,13 @@ const Backdrop = styled.div `
   z-index: 100;
   background-color: rgba(0, 0, 0, .65);
 `
-const ModalWindow = styled.div `
-  position: absolute; 
-  top: 50%; 
-  background-color: white;
-  z-index: 101; 
-`;
+const ModalWindow = ({transition, children}) => {
+  return (
+    <div className={`modal-window ${transition ? "open" : ""}`}>
+      {children}
+    </div>
+  )
+}
 
 const ModalTitle = ({title, onClose}) => {
   return (
@@ -40,13 +44,11 @@ const ModalTitle = ({title, onClose}) => {
   )
 }
 
-const ModalContent = ({content}) => {
-  return (
-    <div>
-      {content}
-    </div>
-  )
-}
+const ModalContent = styled.div.attrs(props => ({
+    children: props.content
+}))`
+  padding-right: .5rem;
+`;
 
 const ModalActions = ({onAgree, onDisagree}) => {
   return (
@@ -62,10 +64,25 @@ const ModalActions = ({onAgree, onDisagree}) => {
 }
 
 const Modal = ({open, title, content, onAgree, onDisagree}) => {
-  return open && (
-    <ModalContainer>
+  const [transition, setTransition] = useState(false);
+  
+  let timeout = null;
+  useEffect(() => {
+    if (!open)
+      return;
+    
+    if (timeout)
+      clearTimeout(timeout);
+    
+    timeout = setTimeout(() => {
+      setTransition(true);
+    }, 10);
+  }, [open]);
+
+  return (
+    <ModalContainer open={open}>
       <Backdrop />
-      <ModalWindow>
+      <ModalWindow transition={transition}>
         <ModalTitle title={title} />
         {typeof content === "object" && content}
         {typeof content === "string" && (
