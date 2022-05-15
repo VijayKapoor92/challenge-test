@@ -80,6 +80,38 @@ function App() {
       </Routes>
     </Router>
   );
+    <div>
+      <div>
+        <h4>Categorias</h4>
+        <div>
+          <button type="button" onClick={() => handleAction({name: "add"})}>
+            <VscAdd/>
+          </button>
+        </div>
+      </div>
+      <div>
+        <ul>
+          {categorias.length > 0 && categorias.map((categoria, index) => {
+            return (
+              <li>
+                <div>
+                  <span>{categoria.nm_categoria}</span>
+                  <span>
+                    <button type="button" onClick={() => handleAction({name: "edit", index})}>
+                      <VscEdit/>
+                    </button>
+                  </span>
+                  <span>
+                    <button type="button" onClick={() => handleAction({name: "delete", index})}>
+                      <VscTrash/>
+                    </button>
+                  </span>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
 }
 
 export default App;
