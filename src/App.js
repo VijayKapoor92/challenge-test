@@ -64,11 +64,32 @@ function CategoriasView() {
     const input = addRef.current;
     if (!validate(input))
       return;
-    }
 
     CategoriasAPI.add({nm_categoria: input.value})
       .then(res => {
         setCategorias([...categorias, res[0]]);
+        input.value = "";
+      })
+      .catch(err => console.error(err));
+  }
+
+  const handleEdit = () => {
+    const input = editRef.current;
+    if (!validate(input))
+      return;
+
+    categorias.map((c, i) => {
+      if (i === action.index)
+        c.nm_categoria = input.value;
+      
+      return c;
+    });
+
+    const categoria = categorias.filter((c,i) => i === action.index)[0];
+
+    CategoriasAPI.edit(categoria)
+      .then(res => {
+        setCategorias([...categorias]);
         input.value = "";
       })
       .catch(err => console.error(err));
