@@ -9,6 +9,8 @@ import {
 import { CategoriasAPI } from "./api";
 import { VscTrash, VscEdit, VscAdd, VscClose } from "react-icons/vsc";
 
+import { ViewWrapper } from "./components";
+
 function App() {
   return (
     <Router>
@@ -22,24 +24,6 @@ function App() {
       </Routes>
     </Router>
   );
-}
-
-function ViewWrapper() {
-  return (
-    <div className="container">
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Categorias</Link>
-          </li>
-          <li>
-            <Link to="/produtos">Produtos</Link>
-          </li>
-        </ul>
-      </nav>
-      <Outlet/>
-    </div>
-  )
 }
 
 function CategoriasView() {
