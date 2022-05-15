@@ -1,17 +1,43 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 import { CategoriasAPI } from "./api";
 
-function App() {
-
+function CategoriasView() {
+  const [categorias, setCategorias] = useState([]);
+  
   useEffect(() => {
     CategoriasAPI.getAll()
-      .then(res => console.log(res))
+      .then(res => setCategorias(res))
       .catch(err => console.error(err));
   }, []);
 
+  console.log("CATEGORIAS: ", categorias);
+
   return (
-    <div></div>
+    <ul>
+      {categorias.length > 0 && categorias.map(categoria => {
+        return (
+          <li>{categoria.nm_categoria}</li>
+        )
+      })}
+    </ul>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route 
+          exact path="/categorias" 
+          element={<CategoriasView/>}
+        />
+      </Routes>
+    </Router>
   );
 }
 
