@@ -112,6 +112,27 @@ function App() {
           })}
         </ul>
       </div>
+
+      {action.name !== "" && action.name === "add" && (
+        <div>
+          <div>
+            <h5>Cadastrar categoria</h5>
+            <button type="button" onClick={() => handleAction({name: "", index: null})}>
+              <VscClose/>
+            </button>
+          </div>
+          <div>
+            <input ref={addRef}/>
+          </div>
+          <div>
+            <button type="button" onClick={() => handleAction({name: "", index: null})}>
+              Fechar
+            </button>
+            <button type="button" onClick={() => handleAdd()}>
+              Salvar
+            </button>
+          </div>
+        </div>
 }
 
 export default App;
