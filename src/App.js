@@ -49,6 +49,9 @@ function CategoriasView() {
     status: "idle",
     index: null
   });
+
+  const addRef = useRef();
+  const editRef = useRef();
   
   useEffect(() => {
     CategoriasAPI.getAll()
@@ -145,6 +148,9 @@ function App() {
             </button>
           </div>
         </div>
+      )}
+    </div>
+  )
 }
 
 export default App;
