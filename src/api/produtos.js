@@ -4,8 +4,8 @@ const ProdutosAPI = {
 
   getAll: async () => {
     try {
-      const response = await api.get("/produtos");
-      return response;
+      const { data } = await api.get("/produtos");
+      return data;
     } catch(error) {
       console.error(error);
     }
@@ -13,8 +13,8 @@ const ProdutosAPI = {
 
   add: async (produto) => {
     try {
-      const response = await api.post("/produtos", {...produto});
-      return response;
+      const { data } = await api.post("/produtos", {...produto});
+      return data;
     } catch (error) {
       console.error(error);
     }
@@ -22,8 +22,8 @@ const ProdutosAPI = {
 
   edit: async (produto) => {
     try {
-      const response = await api.put(`/produtos/${produto.id_produto}`, {...produto});
-      return response;
+      const { data } = await api.put(`/produtos/${produto.id_produto}`, {...produto});
+      return data;
     } catch (error) {
       console.error(error);
     }
@@ -31,8 +31,8 @@ const ProdutosAPI = {
 
   delete: async (id_produto) => {
     try {
-      const response = await api.delete(`/produtos/${id_produto}`);
-      return response;
+      const { data } = await api.delete(`/produtos/${id_produto}`);
+      return data;
     } catch (error) {
       console.error(error);
     }
