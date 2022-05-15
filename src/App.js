@@ -62,9 +62,7 @@ function CategoriasView() {
 
   const handleAdd = () => {
     const input = addRef.current;
-    if (input.value.length === 0) {
-      input.focus();
-      alert("Campo nome categoria não pode ficar em branco!");
+    if (!validate(input))
       return;
     }
 
