@@ -59,7 +59,6 @@ function CategoriasView() {
       .catch(err => console.error(err));
   }, []);
 
-  console.log("CATEGORIAS: ", categorias);
   const handleAction = ({name, status, index}) => {
     setAction({
       name: name || "",
@@ -84,17 +83,7 @@ function CategoriasView() {
       .catch(err => console.error(err));
   }
 
-function App() {
   return (
-    <Router>
-      <Routes>
-        <Route 
-          exact path="/categorias" 
-          element={<CategoriasView/>}
-        />
-      </Routes>
-    </Router>
-  );
     <div>
       <div>
         <h4>Categorias</h4>
