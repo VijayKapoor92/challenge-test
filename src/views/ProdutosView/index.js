@@ -3,8 +3,9 @@ import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
 
 import { Modal } from "../../components";
 import AddProdutoView from "./AddProdutoView";
+import EditProdutoView from "./EditProdutoView";
 
-import { ProdutosAPI } from "../../api";
+import { CategoriasAPI, ProdutosAPI } from "../../api";
 
 function ProdutosView() {
   const [produtos, setProdutos] = useState([]);
@@ -38,7 +39,7 @@ function ProdutosView() {
     let bo = true;
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
-      if (!fieldsValues[key].length) {
+      if (key !== "nm_categoria" && !fieldsValues[key].length) {
         alert(`Nenhum campo pode ficar vazio.`);
         bo = false;
         break;
@@ -52,7 +53,7 @@ function ProdutosView() {
     setAction({
       name: name,
       status: status,
-      index
+      index: index
     });
   }
 
@@ -76,39 +77,42 @@ function ProdutosView() {
       .catch(err => console.error(err));
   }
 
-  const handleEdit = () => {
-    const input = editRef.current;
-    if (!validate(input))
+  const handleEdit = fieldsValues => {
+    if (!validate(fieldsValues))
       return;
     
-    // categorias.map((c, i) => {
-    //   if (i === action.index)
-    //     c.nm_categoria = input.value;
+    produtos.map((p, i) => {
+      if (i === action.index) {
+        p.nm_produto = fieldsValues["nm_produto"];
+        p.qt_produto = fieldsValues["qt_produto"];
+        p.vl_produto = fieldsValues["vl_produto"];
+        p.id_categoria = fieldsValues["id_categoria"];
+        p.nm_categoria = fieldsValues["nm_categoria"];
+      }
       
-    //   return c;
-    // });
+      return p;
+    });
 
-    // const categoria = categorias.filter((c,i) => i === action.index)[0];
-
-    // CategoriasAPI.edit(categoria)
-    //   .then(res => {
-    //     setCategorias([...categorias]);
-    //     input.value = "";
-    //     handleAction();
-    //   })
-    //   .catch(err => console.error(err));
+    const produto = produtos.filter((p, i) => i === action.index)[0];
+    
+    ProdutosAPI.edit(produto)
+      .then(res => {
+        setProdutos([...produtos]);
+        handleCloseModal();
+      })
+      .catch(err => console.error(err));
   }
 
   const handleDelete = (index) => {
-    // const categoria = categorias.filter((c, i) => i === index)[0];
-    // const _categorias = categorias.filter((c, i) => i !== index);
+    const produto = produtos.filter((p, i) => i === index)[0];
+    const _produtos = produtos.filter((p, i) => i !== index);
     
-    // CategoriasAPI.delete(categoria.id_categoria)
-    //   .then(res => {
-    //     setCategorias(_categorias);
-    //     handleCloseConfirm();
-    //   })
-    //   .catch(err => console.error(err));
+    ProdutosAPI.delete(produto.id_produto)
+      .then(res => {
+        setProdutos(_produtos);
+        handleCloseConfirm();
+      })
+      .catch(err => console.error(err));
   }
 
   const handleOpenConfirm = (index) => {
@@ -175,11 +179,33 @@ function ProdutosView() {
         ModalContentView={(
           <AddProdutoView
             onAgree={(fieldsValues) => handleAdd(fieldsValues)}
-            onDisagree={() =>handleCloseModal()}
+            onDisagree={() => handleCloseModal()}
           />
         )}
         onClose={() => handleCloseModal()}
         disableActions
+      />
+
+      <Modal
+        open={action.name !== "" && action.name === "edit"}
+        title="Editar produto"
+        ModalContentView={(
+          <EditProdutoView
+            produto={produtos.filter((p, i) => i === action.index)[0]}
+            onAgree={(fieldsValues) => handleEdit(fieldsValues)}
+            onDisagree={() => handleCloseModal()}
+          />
+        )}
+        onClose={() => handleCloseModal()}
+        disableActions
+      />
+
+      <Modal
+        open={confirm.open}
+        title={confirm.title}
+        content={confirm.question}
+        onAgree={confirm.onAgree}
+        onDisagree={confirm.onDisagree}
       />
     </div>
   )
