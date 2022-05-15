@@ -9,6 +9,21 @@ import {
 import { CategoriasAPI } from "./api";
 import { VscTrash, VscEdit, VscAdd, VscClose } from "react-icons/vsc";
 
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<ViewWrapper />}>
+          <Route
+            index
+            element={<CategoriasView/>}
+          />
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
+
 function ViewWrapper() {
   return (
     <div>
