@@ -31,16 +31,28 @@ const ModalWindow = ({transition, children}) => {
   )
 }
 
+const TitleContainer = styled.div `
+  display: flex;
+  
+`;
+
+const Title = styled.h5 `
+  margin: 0;
+  flex-grow: 1;
+`;
+
 const ModalTitle = ({title, onClose}) => {
   return (
-    <div>
-      <h5>{title}</h5>
+    <TitleContainer>
+      <Title>{title}</Title>
       {onClose && (
-        <button type="button" onClick={onClose}>
-          <VscClose/>
-        </button>
+        <div>
+          <button type="button" onClick={onClose}>
+            <VscClose/>
+          </button>
+        </div>
       )}
-    </div>
+    </TitleContainer>
   )
 }
 
@@ -63,7 +75,7 @@ const ModalActions = ({onAgree, onDisagree}) => {
   )
 }
 
-const Modal = ({open, title, content, onAgree, onDisagree}) => {
+const Modal = ({open, title, content, onClose, onAgree, onDisagree, ModalContentView, disableActions}) => {
   const [transition, setTransition] = useState(false);
   
   let timeout = null;
@@ -83,9 +95,15 @@ const Modal = ({open, title, content, onAgree, onDisagree}) => {
     <ModalContainer open={open}>
       <Backdrop />
       <ModalWindow transition={transition}>
-        <ModalTitle title={title} />
-        <ModalContent content={content} />
-        <ModalActions onAgree={onAgree} onDisagree={onDisagree} />
+        <ModalTitle title={title} onClose={onClose} />
+        {ModalContentView && ModalContentView}
+        {ModalContentView && <ModalContent content={content} />}
+        {!disableActions && (
+          <ModalActions 
+            onAgree={onAgree}
+            onDisagree={onDisagree}
+          />
+        )}
       </ModalWindow>
     </ModalContainer>
   )
