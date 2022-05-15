@@ -65,16 +65,21 @@ function CategoriasView() {
     });
   }
 
-  return (
-    <ul>
-      {categorias.length > 0 && categorias.map(categoria => {
-        return (
-          <li>{categoria.nm_categoria}</li>
-        )
-      })}
-    </ul>
-  )
-}
+  const handleAdd = () => {
+    const input = addRef.current;
+    if (input.value.length === 0) {
+      input.focus();
+      alert("Campo nome categoria não pode ficar em branco!");
+      return;
+    }
+
+    CategoriasAPI.add({nm_categoria: input.value})
+      .then(res => {
+        setCategorias([...categorias, res[0]]);
+        input.value = "";
+      })
+      .catch(err => console.error(err));
+  }
 
 function App() {
   return (
