@@ -5,7 +5,7 @@ import { Modal } from "../../components";
 import AddProdutoView from "./AddProdutoView";
 import EditProdutoView from "./EditProdutoView";
 
-import { CategoriasAPI, ProdutosAPI } from "../../api";
+import { ProdutosAPI } from "../../api";
 
 function ProdutosView() {
   const [produtos, setProdutos] = useState([]);
