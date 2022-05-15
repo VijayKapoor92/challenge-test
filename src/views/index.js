@@ -1,5 +1,7 @@
 import CategoriasView from "./CategoriasView";
+import ProdutosView from "./ProdutosView";
 
 export {
-  CategoriasView
+  CategoriasView,
+  ProdutosView
 }
