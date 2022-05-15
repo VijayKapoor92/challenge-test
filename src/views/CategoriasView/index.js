@@ -184,25 +184,3 @@ function CategoriasView() {
 }
 
 export default CategoriasView;
-
-/*
-<div style={{position: "fixed", top: 0, bottom: 0, left: 0, right: 0, zIndex: 100}}>
-  <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "rgba(0, 0, 0, .2)", zIndex: 100}} />
-  <div style={{position: "absolute", top: "50%", backgroundColor: "white", zIndex: 101}}>
-    <div>
-      <h5>{confirm.title}</h5>
-    </div>
-    <div>
-      {confirm.question}
-    </div>
-    <div>
-      <button type="button" onClick={confirm.onDisagree}>
-        Não
-      </button>
-      <button type="button" onClick={confirm.onAgree}>
-        Sim
-      </button>
-    </div>
-  </div>
-</div>
-*/
