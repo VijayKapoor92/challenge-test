@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { VscTrash, VscEdit, VscAdd, VscClose } from "react-icons/vsc";
+import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
+
+import { Modal } from "../../components";
 
 import { CategoriasAPI } from "../../api";
 
@@ -149,71 +151,58 @@ function CategoriasView() {
       </div>
 
       {action.name !== "" && action.name === "edit" && (
-        <div>
-          <div>
-            <h5>Editar categoria</h5>
-            <button type="button" onClick={() => handleAction({name: "", index: null})}>
-              <VscClose/>
-            </button>
-          </div>
-          <div>
-            <input ref={editRef} placeholder={categorias.filter((c, i) => i === action.index)[0].nm_categoria} />
-          </div>
-          <div>
-            <button type="button" onClick={() => handleAction({name: "", index: null})}>
-              Fechar
-            </button>
-            <button type="button" onClick={() => handleEdit()}>
-              Salvar
-            </button>
-          </div>
-        </div>
+        <Modal
+          open={action.name !== "" && action.name === "edit"}
+          title="Editar categoria"
+          content={<input ref={editRef} placeholder={categorias.filter((c, i) => i === action.index)[0].nm_categoria} />}
+          onAgree={() => handleEdit()}
+          onDisagree={() => handleAction({name: "", index: null})}
+          onClose={() => handleAction({name: "", index: null})}
+        />
       )}
 
       {action.name !== "" && action.name === "add" && (
-        <div>
-          <div>
-            <h5>Cadastrar categoria</h5>
-            <button type="button" onClick={() => handleAction({name: "", index: null})}>
-              <VscClose/>
-            </button>
-          </div>
-          <div>
-            <input ref={addRef}/>
-          </div>
-          <div>
-            <button type="button" onClick={() => handleAction({name: "", index: null})}>
-              Fechar
-            </button>
-            <button type="button" onClick={() => handleAdd()}>
-              Salvar
-            </button>
-          </div>
-        </div>
+        <Modal
+          open={action.name !== "" && action.name === "add"}
+          title="Cadastrar categoria"
+          content={<input ref={addRef}/>}
+          onAgree={() => handleAdd()}
+          onDisagree={() => handleAction({name: "", index: null})}
+          onClose={() => handleAction({name: "", index: null})}
+        />
       )}
 
-      {confirm.open && (
-        <div style={{position: "fixed", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "rgba(0, 0, 0, .2)"}}>
-          <div style={{position: "absolute", top: "50%", backgroundColor: "white"}}>
-            <div>
-              <h5>{confirm.title}</h5>
-            </div>
-            <div>
-              {confirm.question}
-            </div>
-            <div>
-              <button type="button" onClick={confirm.onDisagree}>
-                Não
-              </button>
-              <button type="button" onClick={confirm.onAgree}>
-                Sim
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Modal
+        open={confirm.open}
+        title={confirm.title}
+        content={confirm.question}
+        onAgree={confirm.onAgree}
+        onDisagree={confirm.onDisagree}
+      />
     </div>
   )
 }
 
 export default CategoriasView;
+
+/*
+<div style={{position: "fixed", top: 0, bottom: 0, left: 0, right: 0, zIndex: 100}}>
+  <div style={{position: "absolute", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "rgba(0, 0, 0, .2)", zIndex: 100}} />
+  <div style={{position: "absolute", top: "50%", backgroundColor: "white", zIndex: 101}}>
+    <div>
+      <h5>{confirm.title}</h5>
+    </div>
+    <div>
+      {confirm.question}
+    </div>
+    <div>
+      <button type="button" onClick={confirm.onDisagree}>
+        Não
+      </button>
+      <button type="button" onClick={confirm.onAgree}>
+        Sim
+      </button>
+    </div>
+  </div>
+</div>
+*/
