@@ -29,7 +29,6 @@ function ProdutosView() {
     ProdutosAPI.getAll()
       .then(res => {
         setProdutos(res);
-        console.log(res);
       })
       .catch(err => console.error(err));
   }, []);
