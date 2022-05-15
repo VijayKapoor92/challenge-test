@@ -57,6 +57,13 @@ function CategoriasView() {
   }, []);
 
   console.log("CATEGORIAS: ", categorias);
+  const handleAction = ({name, status, index}) => {
+    setAction({
+      name: name || "",
+      status: status || "idle",
+      index: index || null
+    });
+  }
 
   return (
     <ul>
