@@ -33,6 +33,13 @@ function CategoriasView() {
     status: "idle",
     index: null
   });
+  const [confirm, setConfirm] = useState({
+    open: false,
+    title: "Atenção",
+    question: "Tem certeza?",
+    onDisagree: undefined,
+    onAgree: undefined
+  });
 
   const addRef = useRef();
   const editRef = useRef();
@@ -77,7 +84,7 @@ function CategoriasView() {
     const input = editRef.current;
     if (!validate(input))
       return;
-
+    
     categorias.map((c, i) => {
       if (i === action.index)
         c.nm_categoria = input.value;
@@ -93,6 +100,42 @@ function CategoriasView() {
         input.value = "";
       })
       .catch(err => console.error(err));
+  }
+
+  const handleDelete = (index) => {
+    const categoria = categorias.filter((c, i) => i === index)[0];
+    const _categorias = categorias.filter((c, i) => i !== index);
+
+    // console.log({ categoria, categorias: _categorias, index });
+    
+    CategoriasAPI.delete(categoria.id_categoria)
+      .then(res => {
+        setCategorias(_categorias);
+        handleCloseConfirm();
+      })
+      .catch(err => console.error(err));
+  }
+
+  const handleOpenConfirm = (index) => {
+    console.log("INDEX: ", index);
+    setConfirm(prevState => ({
+      ...prevState,
+      open: true,
+      question: "Tem certeza que quer remover essa categoria?",
+      onAgree: () => {
+        handleDelete(index);
+      },
+      onDisagree: () => {
+        handleCloseConfirm();
+      }
+    }));
+  }
+  const handleCloseConfirm = () => {
+    setConfirm(prevState => ({
+      ...prevState,
+      open: false,
+      onAgree: undefined
+    }));
   }
 
   return (
@@ -118,7 +161,7 @@ function CategoriasView() {
                     </button>
                   </span>
                   <span>
-                    <button type="button" onClick={() => handleAction({name: "delete", index})}>
+                    <button type="button" onClick={() => handleOpenConfirm(index)}>
                       <VscTrash/>
                     </button>
                   </span>
@@ -138,7 +181,7 @@ function CategoriasView() {
             </button>
           </div>
           <div>
-            <input ref={editRef} />
+            <input ref={editRef} value={categorias.filter((c,i) => i === action.index)[0].nm_categoria} />
           </div>
           <div>
             <button type="button" onClick={() => handleAction({name: "", index: null})}>
@@ -169,6 +212,27 @@ function CategoriasView() {
             <button type="button" onClick={() => handleAdd()}>
               Salvar
             </button>
+          </div>
+        </div>
+      )}
+
+      {confirm.open && (
+        <div style={{position: "fixed", top: 0, bottom: 0, left: 0, right: 0, backgroundColor: "rgba(0, 0, 0, .2)"}}>
+          <div style={{position: "absolute", top: "50%", backgroundColor: "white"}}>
+            <div>
+              <h5>{confirm.title}</h5>
+            </div>
+            <div>
+              {confirm.question}
+            </div>
+            <div>
+              <button type="button" onClick={confirm.onDisagree}>
+                Não
+              </button>
+              <button type="button" onClick={confirm.onAgree}>
+                Sim
+              </button>
+            </div>
           </div>
         </div>
       )}
