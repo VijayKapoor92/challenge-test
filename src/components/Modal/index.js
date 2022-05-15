@@ -61,18 +61,18 @@ const ModalActions = ({onAgree, onDisagree}) => {
   )
 }
 
-const Modal = ({open, title, content, onAgree, onDisagree, windowComponent}) => {
+const Modal = ({open, title, content, onAgree, onDisagree}) => {
   return open && (
     <ModalContainer>
       <Backdrop />
-      {windowComponent && windowComponent}
-      {!windowComponent && (
-        <ModalWindow>
-          <ModalTitle title={title} />
+      <ModalWindow>
+        <ModalTitle title={title} />
+        {typeof content === "object" && content}
+        {typeof content === "string" && (
           <ModalContent content={content} />
-          <ModalActions onAgree={onAgree} onDisagree={onDisagree} />
-        </ModalWindow>
-      )}
+        )}
+        <ModalActions onAgree={onAgree} onDisagree={onDisagree} />
+      </ModalWindow>
     </ModalContainer>
   )
 }
