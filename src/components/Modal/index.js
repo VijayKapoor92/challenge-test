@@ -89,6 +89,10 @@ const Modal = ({open, title, content, onClose, onAgree, onDisagree, ModalContent
     timeout = setTimeout(() => {
       setTransition(true);
     }, 10);
+
+    return () => {
+      setTransition(false);
+    }
   }, [open]);
 
   return (
