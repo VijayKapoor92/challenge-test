@@ -59,6 +59,15 @@ function CategoriasView() {
       .catch(err => console.error(err));
   }, []);
 
+  const validate = input => {
+    if (input.value.length === 0) {
+      input.focus();
+      alert("Campo nome categoria não pode ficar em branco!");
+      return;
+    }
+    return true;
+  }
+
   const handleAction = ({name, status, index}) => {
     setAction({
       name: name || "",
