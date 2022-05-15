@@ -129,6 +129,28 @@ function CategoriasView() {
         </ul>
       </div>
 
+      {action.name !== "" && action.name === "edit" && (
+        <div>
+          <div>
+            <h5>Editar categoria</h5>
+            <button type="button" onClick={() => handleAction({name: "", index: null})}>
+              <VscClose/>
+            </button>
+          </div>
+          <div>
+            <input ref={editRef} />
+          </div>
+          <div>
+            <button type="button" onClick={() => handleAction({name: "", index: null})}>
+              Fechar
+            </button>
+            <button type="button" onClick={() => handleEdit()}>
+              Salvar
+            </button>
+          </div>
+        </div>
+      )}
+
       {action.name !== "" && action.name === "add" && (
         <div>
           <div>
