@@ -97,7 +97,7 @@ const Modal = ({open, title, content, onClose, onAgree, onDisagree, ModalContent
       <ModalWindow transition={transition}>
         <ModalTitle title={title} onClose={onClose} />
         {ModalContentView && ModalContentView}
-        {ModalContentView && <ModalContent content={content} />}
+        {!ModalContentView && <ModalContent content={content} />}
         {!disableActions && (
           <ModalActions 
             onAgree={onAgree}
