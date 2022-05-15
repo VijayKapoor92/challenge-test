@@ -26,7 +26,7 @@ function App() {
 
 function ViewWrapper() {
   return (
-    <div>
+    <div className="container">
       <nav>
         <ul>
           <li>
