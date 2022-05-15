@@ -4,7 +4,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import { CategoriasView } from "./views";
+import { CategoriasView, ProdutosView } from "./views";
 
 import { ViewWrapper } from "./components";
 
@@ -16,6 +16,10 @@ function App() {
           <Route
             index
             element={<CategoriasView/>}
+          />
+          <Route
+            path="/produtos"
+            element={<ProdutosView/>}
           />
         </Route>
       </Routes>
