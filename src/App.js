@@ -29,6 +29,11 @@ function ViewWrapper() {
 
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
+  const [action, setAction] = useState({
+    name: "",
+    status: "idle",
+    index: null
+  });
   
   useEffect(() => {
     CategoriasAPI.getAll()
