@@ -109,7 +109,7 @@ function CategoriasView() {
         <ul>
           {categorias.length > 0 && categorias.map((categoria, index) => {
             return (
-              <li>
+              <li key={index}>
                 <div>
                   <span>{categoria.nm_categoria}</span>
                   <span>
