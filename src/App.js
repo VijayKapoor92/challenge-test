@@ -9,6 +9,24 @@ import {
 import { CategoriasAPI } from "./api";
 import { VscTrash, VscEdit, VscAdd, VscClose } from "react-icons/vsc";
 
+function ViewWrapper() {
+  return (
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Categorias</Link>
+          </li>
+          <li>
+            <Link to="/produtos">Produtos</Link>
+          </li>
+        </ul>
+      </nav>
+      <Outlet/>
+    </div>
+  )
+}
+
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
   
