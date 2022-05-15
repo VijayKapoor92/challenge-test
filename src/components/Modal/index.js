@@ -84,10 +84,7 @@ const Modal = ({open, title, content, onAgree, onDisagree}) => {
       <Backdrop />
       <ModalWindow transition={transition}>
         <ModalTitle title={title} />
-        {typeof content === "object" && content}
-        {typeof content === "string" && (
-          <ModalContent content={content} />
-        )}
+        <ModalContent content={content} />
         <ModalActions onAgree={onAgree} onDisagree={onDisagree} />
       </ModalWindow>
     </ModalContainer>
