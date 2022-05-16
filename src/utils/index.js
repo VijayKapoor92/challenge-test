@@ -30,16 +30,16 @@ export const
     
     for (let i = 0; i < str.length; i++) {
       troca = false;
-      for (let a = 0; a < ca.length; a++) {
-        if (str.substr(i, 1) === ca.substr(a, 1)) {
-          novastr += sa.substr(a,1);
+      for (let j = 0; j < ca.length; j++) {
+        if (str.substr(i, 1) === ca.substr(j, 1)) {
+          novastr += sa.substr(j, 1);
           troca = true;
           break;
         }
       }
-      if (troca == false) {
+      
+      if (!troca)
         novastr += str.substr(i, 1);
-      }
     }
 
     return novastr;
