@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
 
-import { Modal } from "../../components";
+import { ButtonSuccess, ButtonDanger, ButtonDefault, Input, Modal } from "../../components";
 
 import { CategoriasAPI, ProdutosAPI } from "../../api";
 import * as Utils from "../../utils";
+
+import image_not_found from "../../assets/img_not_found.png";
 
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
