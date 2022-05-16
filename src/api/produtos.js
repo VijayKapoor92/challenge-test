@@ -36,6 +36,24 @@ const ProdutosAPI = {
     } catch (error) {
       console.error(error);
     }
+  },
+
+  import: async ({file, id_categoria}) => {
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("id_categoria", id_categoria);
+      
+
+      const response = await api.post(`/produtos/import`, form, { 
+        headers: {
+          "Content-Type": "multipart/form-data"
+        } 
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 }
