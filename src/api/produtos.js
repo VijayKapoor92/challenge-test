@@ -54,6 +54,15 @@ const ProdutosAPI = {
     } catch (error) {
       console.error(error);
     }
+  },
+
+  export: async (id_categoria) => {
+    try {
+      const response = await api.post(`/produtos/${id_categoria}/export`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 }
