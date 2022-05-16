@@ -263,7 +263,7 @@ function CategoriasView() {
       <Modal
         open={modalAdd.open}
         title="Cadastrar categoria"
-        content={<input ref={addRef}/>}
+        content={<Input ref={addRef} />}
         onAgree={() => handleAdd()}
         onDisagree={handleCloseModalAdd}
         onClose={handleCloseModalAdd}
@@ -272,7 +272,13 @@ function CategoriasView() {
       <Modal
         open={modalEdit.open}
         title="Editar categoria"
-        content={<input ref={editRef} placeholder={modalEdit.payload ? modalEdit.payload.nm_categoria: ""} />}
+        content={(
+          <Input 
+            ref={editRef} 
+            defaultValue={modalEdit.payload ? modalEdit.payload.nm_categoria: ""} 
+            onChange={undefined} 
+          />
+        )}
         onAgree={() => handleEdit()}
         onDisagree={() => handleCloseModalEdit()}
         onClose={() => handleCloseModalEdit()}
