@@ -50,11 +50,9 @@ const ModalTitle = ({title, onClose}) => {
     <TitleContainer>
       <Title>{title}</Title>
       {onClose && (
-        <div>
-          <button type="button" onClick={onClose}>
-            <VscClose/>
-          </button>
-        </div>
+        <ButtonClose onClick={onClose}>
+          <VscClose/>
+        </ButtonClose>
       )}
     </TitleContainer>
   )
@@ -63,7 +61,6 @@ const ModalTitle = ({title, onClose}) => {
 const ModalContent = styled.div.attrs(props => ({
     children: props.content
 }))`
-  padding-right: .5rem;
   padding: .5rem .9rem .5rem 0;
 `;
 `;
