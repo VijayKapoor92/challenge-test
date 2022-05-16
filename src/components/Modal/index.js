@@ -63,18 +63,40 @@ const ModalContent = styled.div.attrs(props => ({
 }))`
   padding: .5rem .9rem .5rem 0;
 `;
+
+const ModalActionsContainer = styled.div `
+  padding-top: .45rem;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: center;
+`
+
+const ModalActionDeny = styled(Button) `
+  &:hover {
+    background-color: #FFEBEE;
+  }
+`;
+
+const ModalActionAccept = styled(Button) `
+  margin-left: .5rem;
+  &:hover {
+    background-color: #E8F5E9;
+  }
 `;
 
 const ModalActions = ({onAgree, onDisagree}) => {
   return (
-    <div>
-      <button type="button" onClick={onDisagree}>
-        Não
-      </button>
-      <button type="button" onClick={onAgree}>
-        Sim
-      </button>
-    </div>
+    <ModalActionsContainer>
+      <ModalActionDeny 
+        label="Não" 
+        onClick={onDisagree} 
+      />
+      <ModalActionAccept 
+        label="Sim"
+        onClick={onAgree}
+      />
+    </ModalActionsContainer>
   )
 }
 
