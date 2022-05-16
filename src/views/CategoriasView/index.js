@@ -51,11 +51,15 @@ function retiraAcentos(str)
 
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
+  
+  const [modalAdd, setModalAdd] = useState({ open: false });
+
   const [action, setAction] = useState({
     name: "",
     status: "idle",
     index: null
   });
+
   const [confirm, setConfirm] = useState({
     open: false,
     title: "Atenção",
@@ -91,18 +95,32 @@ function CategoriasView() {
     });
   }
 
+  const handleOpenModalAdd = () => 
+    setModalAdd({ open: true });
+  
+  const handleCloseModalAdd = () =>
+    setModalAdd({ open: false });
+
   const handleAdd = () => {
     const input = addRef.current;
+    
+    const handleSuccess = payload => {
+      setCategorias([...categorias, payload[0]]);
+      input.value = "";
+      handleCloseModalAdd();
+    }
+
+    const handleError = err => {
+      console.error(err);
+      handleCloseModalAdd();
+    }
+    
     if (!validate(input))
       return;
 
-    CategoriasAPI.add({nm_categoria: input.value})
-      .then(res => {
-        setCategorias([...categorias, res[0]]);
-        input.value = "";
-        handleAction();
-      })
-      .catch(err => console.error(err));
+    CategoriasAPI.add(input.value)
+      .then(handleSuccess)
+      .catch(handleError);
   }
 
   const handleEdit = () => {
@@ -192,7 +210,7 @@ function CategoriasView() {
       <div>
         <h4>Categorias</h4>
         <div>
-          <button type="button" onClick={() => handleAction({name: "add"})}>
+          <button type="button" onClick={handleOpenModalAdd}>
             <VscAdd/>
           </button>
           <div>
@@ -230,23 +248,21 @@ function CategoriasView() {
         </ul>
       </div>
 
+      <Modal
+        open={modalAdd.open}
+        title="Cadastrar categoria"
+        content={<input ref={addRef}/>}
+        onAgree={() => handleAdd()}
+        onDisagree={handleCloseModalAdd}
+        onClose={handleCloseModalAdd}
+      />
+
       {action.name !== "" && action.name === "edit" && (
         <Modal
           open={action.name !== "" && action.name === "edit"}
           title="Editar categoria"
           content={<input ref={editRef} placeholder={categorias.filter((c, i) => i === action.index)[0].nm_categoria} />}
           onAgree={() => handleEdit()}
-          onDisagree={() => handleAction({name: "", index: null})}
-          onClose={() => handleAction({name: "", index: null})}
-        />
-      )}
-
-      {action.name !== "" && action.name === "add" && (
-        <Modal
-          open={action.name !== "" && action.name === "add"}
-          title="Cadastrar categoria"
-          content={<input ref={addRef}/>}
-          onAgree={() => handleAdd()}
           onDisagree={() => handleAction({name: "", index: null})}
           onClose={() => handleAction({name: "", index: null})}
         />
