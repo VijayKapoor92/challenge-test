@@ -3,7 +3,7 @@ import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
 
 import { Modal } from "../../components";
 
-import { CategoriasAPI } from "../../api";
+import { CategoriasAPI, ProdutosAPI } from "../../api";
 
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
@@ -22,6 +22,7 @@ function CategoriasView() {
 
   const addRef = useRef();
   const editRef = useRef();
+  const importRef = useRef();
   
   useEffect(() => {
     CategoriasAPI.getAll()
@@ -116,6 +117,20 @@ function CategoriasView() {
     }));
   }
 
+  const handleChangeFile = e => {
+    const file = e.target.files[0];
+    if (file.type !== "application/json") {
+      alert("O arquivo deve ser em formato json \n Ex.: [{ \"nm_produto\": \"\", \"qt_produto\": \"\", \"vl_produto\": \"\" }]");
+      return;
+    }
+  }
+
+  const handleImport = () => {
+    ProdutosAPI.import({file: importRef.current.files[0], id_categoria: 1})
+      .then(res => console.log(res))
+      .then(err => console.error(err));
+  }
+
   return (
     <div>
       <div>
@@ -124,6 +139,12 @@ function CategoriasView() {
           <button type="button" onClick={() => handleAction({name: "add"})}>
             <VscAdd/>
           </button>
+          <div>
+            <input type="file" ref={importRef} onChange={handleChangeFile} />
+            <button type="button" onClick={handleImport}>
+              Importar
+            </button>
+          </div>
         </div>
       </div>
       <div>
