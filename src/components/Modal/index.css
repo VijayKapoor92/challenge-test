@@ -1,3 +1,38 @@
+.modal-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  
+  position: fixed;
+  top: 0; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  z-index: 100;
+
+  transition: opacity 200ms .15s linear;
+}
+
+.modal-container.opening {
+  display: block;
+  opacity: 0;
+}
+
+.modal-container.opened {
+  display: block;
+  opacity: 1;
+}
+
+.modal-container.closing {
+  display: block;
+  opacity: 0;
+}
+
+.modal-container.closed {
+  display: none;
+  opacity: 0;
+}
+
 .modal-window {
   position: absolute; 
   left: calc(50% - 175px);
@@ -5,12 +40,25 @@
   z-index: 101;
 
   width: 350px;
-  padding: 1rem;
+  padding: .5rem 1rem;
+  border-radius: .3rem;
 
   transform: translateY(1000%);
-  transition: all 400ms ease-in-out;
+  transition: transform 350ms .1s ease-in-out;
 }
 
-.modal-window.open {
+.modal-window.opening {
+  display: block;
+}
+
+.modal-window.opened {
   transform: translateY(50%);
+}
+
+.modal-window.closing {
+  transform: translateY(1000%);
+}
+
+.modal-window.closed {
+  display: none;
 }
