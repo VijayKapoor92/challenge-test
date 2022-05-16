@@ -101,29 +101,47 @@ const ModalActions = ({onAgree, onDisagree}) => {
 }
 
 const Modal = ({open, title, content, onClose, onAgree, onDisagree, ModalContentView, disableActions}) => {
-  const [transition, setTransition] = useState(false);
+  const [_self, _setSelf] = useState({
+    status: "closed" // closed || closing || opening || opened
+  });
   
-  let timeout = null;
+  let timeout1 = null;
+  let timeout2 = null;
+  
   useEffect(() => {
     if (!open)
       return;
     
-    if (timeout)
-      clearTimeout(timeout);
+    if (timeout1)
+      clearTimeout(timeout1);
     
-    timeout = setTimeout(() => {
-      setTransition(true);
+    timeout1 = setTimeout(() => {
+      _setSelf({ status: "opening" });
     }, 10);
 
+    if (timeout2)
+      clearTimeout(timeout2);
+    
+    timeout2 = setTimeout(() => {
+      _setSelf({ status: "opened" });
+    }, 100);
+
     return () => {
-      setTransition(false);
+      _setSelf({ status: "closing" });
+      if (timeout1)
+        clearTimeout(timeout1);
+      
+      timeout1 = setTimeout(() => {
+        _setSelf({ status: "closed" });
+      }, 500);
+
     }
   }, [open]);
 
   return (
-    <ModalContainer open={open}>
+    <ModalContainer status={_self.status}>
       <Backdrop />
-      <ModalWindow transition={transition}>
+      <ModalWindow status={_self.status}>
         <ModalTitle title={title} onClose={onClose} />
         {ModalContentView && ModalContentView}
         {!ModalContentView && <ModalContent content={content} />}
