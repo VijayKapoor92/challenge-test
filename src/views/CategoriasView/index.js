@@ -53,6 +53,10 @@ function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
   
   const [modalAdd, setModalAdd] = useState({ open: false });
+  const [modalEdit, setModalEdit] = useState({ 
+    open: false,
+    payload: null
+  });
 
   const [action, setAction] = useState({
     name: "",
@@ -94,6 +98,8 @@ function CategoriasView() {
       index
     });
   }
+  
+  /* -- Begin: ModalAdd Methods -- */
 
   const handleOpenModalAdd = () => 
     setModalAdd({ open: true });
@@ -123,35 +129,55 @@ function CategoriasView() {
       .catch(handleError);
   }
 
+  /* -- End: ModalAdd Methods -- */
+
+  /* -- Begin: ModalEdit Methods -- */
+  
+  const handleOpenModalEdit = payload =>
+    setModalEdit({
+      open: true,
+      payload
+    });
+  
+  const handleCloseModalEdit = () =>
+    setModalEdit({
+      open: false,
+      payload: null
+    });
+
   const handleEdit = () => {
     const input = editRef.current;
+    
+    const handleSuccess = () => {
+      setCategorias(categorias);
+      input.value = "";
+      handleCloseModalEdit();
+    }
+
+    const handleError = err => {
+      console.error(err);
+      handleCloseModalEdit();
+    }
+    
     if (!validate(input))
       return;
     
-    categorias.map((c, i) => {
-      if (i === action.index)
-        c.nm_categoria = input.value;
-      
-      return c;
-    });
-
-    const categoria = categorias.filter((c,i) => i === action.index)[0];
+    let categoria = modalEdit.payload;
+    categoria.nm_categoria = input.value;
 
     CategoriasAPI.edit(categoria)
-      .then(res => {
-        setCategorias([...categorias]);
-        input.value = "";
-        handleAction();
-      })
-      .catch(err => console.error(err));
+      .then(handleSuccess)
+      .catch(handleError);
   }
+
+  /* -- End: ModalAdd Methods -- */
 
   const handleDelete = (index) => {
     const categoria = categorias.filter((c, i) => i === index)[0];
     const _categorias = categorias.filter((c, i) => i !== index);
     
     CategoriasAPI.delete(categoria.id_categoria)
-      .then(res => {
+      .then(() => {
         setCategorias(_categorias);
         handleCloseConfirm();
       })
@@ -232,7 +258,7 @@ function CategoriasView() {
                 <div>
                   <span>{categoria.nm_categoria}</span>
                   <span>
-                    <button type="button" onClick={() => handleAction({name: "edit", index})}>
+                    <button type="button" onClick={() => handleOpenModalEdit(categoria)}>
                       <VscEdit/>
                     </button>
                   </span>
@@ -257,16 +283,14 @@ function CategoriasView() {
         onClose={handleCloseModalAdd}
       />
 
-      {action.name !== "" && action.name === "edit" && (
-        <Modal
-          open={action.name !== "" && action.name === "edit"}
-          title="Editar categoria"
-          content={<input ref={editRef} placeholder={categorias.filter((c, i) => i === action.index)[0].nm_categoria} />}
-          onAgree={() => handleEdit()}
-          onDisagree={() => handleAction({name: "", index: null})}
-          onClose={() => handleAction({name: "", index: null})}
-        />
-      )}
+      <Modal
+        open={modalEdit.open}
+        title="Editar categoria"
+        content={<input ref={editRef} placeholder={modalEdit.payload ? modalEdit.payload.nm_categoria: ""} />}
+        onAgree={() => handleEdit()}
+        onDisagree={() => handleCloseModalEdit()}
+        onClose={() => handleCloseModalEdit()}
+      />
 
       <Modal
         open={confirm.open}
