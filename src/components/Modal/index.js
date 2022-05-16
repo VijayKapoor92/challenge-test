@@ -37,11 +37,11 @@ const ModalWindow = styled.div.attrs(props => {
 
 const TitleContainer = styled.div `
   display: flex;
-  
+  align-items: center;
 `;
 
-const Title = styled.h5 `
-  margin: 0;
+const Title = styled.h3 `
+  margin: .45rem 0;
   flex-grow: 1;
 `;
 
@@ -64,6 +64,8 @@ const ModalContent = styled.div.attrs(props => ({
     children: props.content
 }))`
   padding-right: .5rem;
+  padding: .5rem .9rem .5rem 0;
+`;
 `;
 
 const ModalActions = ({onAgree, onDisagree}) => {
