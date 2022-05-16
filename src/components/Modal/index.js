@@ -7,16 +7,14 @@ import { VscClose } from "react-icons/vsc";
 
 import "./index.css";
 
-const ModalContainer = styled.div `
-  position: fixed;
-  top: 0; 
-  bottom: 0; 
-  left: 0; 
-  right: 0; 
-  z-index: 100;
+const ModalContainer = styled.div.attrs(props => {
+  const { status, children } = props;
 
-  display: ${props => props.open ? "block" : "none"};
-`;
+  return ({
+    className: `modal-container ${status}`,
+    children
+  })
+})``;
 
 const Backdrop = styled.div `
   position: fixed;
@@ -27,13 +25,15 @@ const Backdrop = styled.div `
   z-index: 100;
   background-color: rgba(0, 0, 0, .65);
 `
-const ModalWindow = ({transition, children}) => {
-  return (
-    <div className={`modal-window ${transition ? "open" : ""}`}>
-      {children}
-    </div>
-  )
-}
+
+const ModalWindow = styled.div.attrs(props => {
+  const { status, children } = props;
+
+  return ({
+    className: `modal-window ${status}`,
+    children
+  })
+})``;
 
 const TitleContainer = styled.div `
   display: flex;
