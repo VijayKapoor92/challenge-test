@@ -1,6 +1,7 @@
 import Container from "./Container";
 import ViewWrapper from "./ViewWrapper";
 import Modal from "./Modal";
+import { Input, Select } from "./Fields";
 import {
   Button,
   ButtonDefault, 
@@ -13,7 +14,9 @@ import {
 export {
   Container,
   ViewWrapper,
-  Modal
+  Modal,
+  Input,
+  Select,
   Button,
   ButtonDefault, 
   ButtonSuccess, 
