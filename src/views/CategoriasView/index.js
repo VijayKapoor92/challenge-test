@@ -195,28 +195,69 @@ function CategoriasView() {
           </button>
         </div>
       </div>
-      <div>
-        <ul>
-          {categorias.length > 0 && categorias.map((categoria, index) => {
+      <div style={{paddingLeft: 0, paddingRight: 15}}>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+        {categorias.length > 0 && categorias.map((categoria, index) => {
             return (
-              <li key={index}>
-                <div>
-                  <span>{categoria.nm_categoria}</span>
-                  <span>
-                    <button type="button" onClick={() => handleOpenModalEdit(categoria)}>
-                      <VscEdit/>
-                    </button>
-                  </span>
-                  <span>
-                    <button type="button" onClick={() => handleOpenConfirm(index)} style={{backgroundColor: "red"}}>
-                      <VscTrash/>
-                    </button>
-                  </span>
+              <div key={categoria.id_categoria} style={{width: "20%", maxWidth: "20%", flexBasis: "20%", height: 250, marginBottom: 20}}>
+                <div style={{backgroundColor: "#FFFFFF", border: "1px solid rgba(0, 0, 0, .24)", borderRadius: ".2rem"}}>
+                  <div 
+                    style={{
+                      width: "100%", 
+                      height: 150, 
+                      position: "relative", 
+                      backgroundImage: `url(${image_not_found})`, 
+                      backgroundRepeat: "no-repeat", 
+                      backgroundSize: "cover",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "flex-end"
+                    }}
+                  >
+                    <div 
+                      style={{
+                        position: "absolute", 
+                        top: 0, 
+                        right: 0, 
+                        bottom: 0, 
+                        left: 0, 
+                        zIndex: 1,
+                        backgroundImage: "linear-gradient(to bottom, transparent, #757575)"
+                      }} 
+                    />
+                    {/* <img
+                      src={image_not_found} 
+                      alt="Not found" 
+                      style={{
+                        width: "inherit", 
+                        height: "inherit",
+                        zIndex: -1
+                      }} 
+                    /> */}
+
+                    <div style={{color: "#FFFFFF", fontWeight: "bold", zIndex: 2, marginLeft: 5, marginBottom: 5}}>
+                      {categoria.nm_categoria}
+                    </div>
+                  </div>
+                  <div style={{display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 15, paddingBottom: 15}}>
+                    <ButtonDefault
+                      label="Editar"
+                      icon={<VscEdit/>}
+                      onClick={() => handleOpenModalEdit(categoria)}
+                      width="75%"
+                    />
+                    <ButtonDanger
+                      label="Remover"
+                      icon={<VscTrash/>}
+                      onClick={() => handleOpenConfirm(index)}
+                      width="75%"
+                    />
+                  </div>
                 </div>
-              </li>
+              </div>
             )
           })}
-        </ul>
+          </div>
       </div>
 
       <Modal
