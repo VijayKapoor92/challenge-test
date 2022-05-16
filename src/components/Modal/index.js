@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
+import { Button, ButtonClose } from "../Buttons";
+
 import { VscClose } from "react-icons/vsc";
+
 import "./index.css";
 
 const ModalContainer = styled.div `
