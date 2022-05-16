@@ -11,9 +11,9 @@ const CategoriasAPI = {
     }
   },
 
-  add: async (categoria) => {
+  add: async (nm_categoria) => {
     try {
-      const response = await api.post("/categorias", {...categoria});
+      const response = await api.post("/categorias", { nm_categoria });
       return response.data;
     } catch (error) {
       console.error(error);
