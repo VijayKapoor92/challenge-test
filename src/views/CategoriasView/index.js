@@ -4,50 +4,7 @@ import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
 import { Modal } from "../../components";
 
 import { CategoriasAPI, ProdutosAPI } from "../../api";
-
-const setBlob = (data) => {
-  return new Blob([ JSON.stringify(data) ], { type: 'application/json' });
-}
-
-const downloadBlob = (blob, filename) => {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-
-  const clickHandler = () => {
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-      a.removeEventListener('click', clickHandler);
-    }, 1);
-  };
-
-  a.addEventListener('click', clickHandler, false);
-  a.click();
-}
-
-function retiraAcentos(str) 
-{
-
-  let com_acento = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝŔÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŕ";
-  let sem_acento = "AAAAAAACEEEEIIIIDNOOOOOOUUUUYRsBaaaaaaaceeeeiiiionoooooouuuuybyr";
-  let novastr = "";
-  let troca;
-  for (let i = 0; i < str.length; i++) {
-    troca = false;
-    for (let a = 0; a < com_acento.length; a++) {
-      if (str.substr(i,1) == com_acento.substr(a,1)) {
-        novastr += sem_acento.substr(a,1);
-        troca = true;
-        break;
-      }
-    }
-    if (troca == false) {
-      novastr += str.substr(i,1);
-    }
-  }
-  return novastr;
-}
+import * as Utils from "../../utils";
 
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
@@ -56,12 +13,6 @@ function CategoriasView() {
   const [modalEdit, setModalEdit] = useState({ 
     open: false,
     payload: null
-  });
-
-  const [action, setAction] = useState({
-    name: "",
-    status: "idle",
-    index: null
   });
 
   const [confirm, setConfirm] = useState({
@@ -89,14 +40,6 @@ function CategoriasView() {
       return;
     }
     return true;
-  }
-
-  const handleAction = ({name, status, index}) => {
-    setAction({
-      name: name || "",
-      status: status || "idle",
-      index
-    });
   }
   
   /* -- Begin: ModalAdd Methods -- */
@@ -224,9 +167,9 @@ function CategoriasView() {
       .then(res => {
         // Creating a blob object from non-blob 
         // data using the Blob constructor
-        const blob = setBlob(res.payload);
-        const filename = retiraAcentos(res.payload[0].nm_categoria);
-        downloadBlob(blob, filename);
+        const blob = Utils.setBlob(res.payload);
+        const filename = Utils.retiraAcentos(res.payload[0].nm_categoria);
+        Utils.downloadBlob(blob, filename);
       })
       .catch(err => console.error(err));
   }
