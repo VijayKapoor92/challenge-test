@@ -162,27 +162,37 @@ function CategoriasView() {
     }));
   }
 
+  const [importID, setImportID] = useState(null);
   const handleChangeFile = e => {
     const file = e.target.files[0];
     if (file.type !== "application/json") {
       alert("O arquivo deve ser em formato json \n Ex.: [{ \"nm_produto\": \"\", \"qt_produto\": \"\", \"vl_produto\": \"\" }]");
       return;
     }
+
+    ProdutosAPI.import({file: importRef.current.files[0], id_categoria: importID})
+      .then(res => {
+        console.log(res);
+        setImportID(null);
+      })
+      .then(err => {
+        console.error(err)
+        setImportID(null);
+      });
   }
 
-  const handleImport = () => {
-    ProdutosAPI.import({file: importRef.current.files[0], id_categoria: 1})
-      .then(res => console.log(res))
-      .then(err => console.error(err));
+  const handleImport = id_categoria => {
+    setImportID(id_categoria);
+    importRef.current.click();
   }
 
-  const handleExport = () => {
-    ProdutosAPI.export(1)
+  const handleExport = id_categoria => {
+    ProdutosAPI.export(id_categoria)
       .then(res => {
         // Creating a blob object from non-blob 
         // data using the Blob constructor
         const blob = Utils.setBlob(res.payload);
-        const filename = Utils.retiraAcentos(res.payload[0].nm_categoria);
+        const filename = Utils.setFileName(res.payload[0].nm_categoria);
         Utils.downloadBlob(blob, filename);
       })
       .catch(err => console.error(err));
@@ -196,23 +206,22 @@ function CategoriasView() {
           <button type="button" onClick={handleOpenModalAdd}>
             <VscAdd/>
           </button>
-          <div>
-            <input type="file" ref={importRef} onChange={handleChangeFile} />
-            <button type="button" onClick={handleImport}>
-              Importar
-            </button>
-          </div>
-          <button type="button" onClick={handleExport}>
-            Exportar
-          </button>
         </div>
       </div>
 
       <div>
+        <input 
+          type="file" 
+          ref={importRef} 
+          onChange={handleChangeFile} 
+          style={{display: "none"}} 
+        />
         <CategoriasCardList 
           categorias={categorias}
           onEdit={handleOpenModalEdit}
-          onRemove={handleDelete}
+          onRemove={handleOpenConfirm}
+          onExport={handleExport}
+          onImport={handleImport}
         />
       </div>
 
@@ -234,12 +243,15 @@ function CategoriasView() {
         open={modalEdit.open}
         title="Editar categoria"
         content={(
-          <Input 
-            ref={editRef} 
-            onFocus={() => {
-              editRef.current.value = modalEdit.payload.nm_categoria;
-            }}
-          />
+          <FormGroup>
+            <label htmlFor="nm_categoria">Nome</label>
+            <Input 
+              ref={editRef} 
+              onFocus={() => {
+                editRef.current.value = modalEdit.payload.nm_categoria;
+              }}
+            />
+          </FormGroup>
         )}
         onAgree={() => handleEdit()}
         onDisagree={() => handleCloseModalEdit()}
