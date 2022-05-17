@@ -7,7 +7,8 @@ import {
   CardList, 
   CardListItem,
   ButtonDanger, 
-  ButtonDefault
+  ButtonDefault,
+  Skeleton
 } from "../../components";
 
 import img_not_found from "../../assets/img_not_found.png";
@@ -90,6 +91,25 @@ const getBadgeColor = (qt) => {
   return "#4CAF50";
 }
 
+export const ProdutoCardSkeleton = () => {
+  return (
+    <div style={{width: 200, border: "1px solid #ccc"}}>
+      <Skeleton width="100%" height="150px" style={{marginBottom: 15, position: "relative"}}>
+        <div style={{position: "absolute", top: 5, right: 5, width: 25, height: 25, borderRadius: "50%", backgroundColor: "white"}} />
+        <div style={{position: "absolute", bottom: 5, left: 5, width: "65%", height: 15, backgroundColor: "white"}} />
+      </Skeleton>
+      <div style={{paddingLeft: 5, paddingRight: 5}}>
+        <Skeleton width="75%" height="17px" style={{marginBottom: 10}} />
+        <Skeleton width="45%" height="15px" />
+      </div>
+      <div style={{marginTop: 20, paddingLeft: 5, paddingRight: 5, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+        <Skeleton width="50%" height="20px" style={{marginBottom: 15}} />
+        <Skeleton width="50%" height="20px" style={{marginBottom: 5}} />
+      </div>
+    </div>
+  )
+}
+
 export const ProdutosCardList = (props) => {
   const { produtos, onEdit, onRemove } = props;
 
@@ -97,7 +117,7 @@ export const ProdutosCardList = (props) => {
     <CardList>
       {produtos.length > 0 && produtos.map(produto => {
         return (
-          <CardListItem>
+          <CardListItem key={produto.id_produto}>
             <Card>
               <CardHeaderImage image={img_not_found}>
                 <FadedOverlay />

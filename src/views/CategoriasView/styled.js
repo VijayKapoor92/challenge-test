@@ -10,7 +10,7 @@ import {
   ButtonDanger,
   ButtonDefault,
   ButtonPrimary,
-  ButtonWarning
+  Skeleton
 } from "../../components";
 
 const CategoriaIcon = styled(VscTag) `
@@ -40,6 +40,26 @@ const CardDetails = styled.div `
     font-weight: bold;
   }
 `;
+
+export const CategoriaCardSkeleton = () => {
+  return (
+    <div style={{width: 200, border: "1px solid #ccc", borderRadius: ".2rem"}}>
+      <div style={{padding: "15px 10px"}}>
+        <Skeleton width="95%" height="25px" />
+      </div>
+      <div style={{height: 80, backgroundColor: "rgba(0,0,0,.04)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+        <Skeleton width="10%" height="20px" style={{marginBottom: 10}} />
+        <Skeleton width="35%" height="15px" />
+      </div>
+      <div style={{marginTop: 20, paddingLeft: 5, paddingRight: 5, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+        <Skeleton width="50%" height="20px" style={{marginBottom: 15}} />
+        <Skeleton width="50%" height="20px" style={{marginBottom: 5}} />
+        <Skeleton width="50%" height="20px" style={{marginBottom: 15}} />
+        <Skeleton width="50%" height="20px" style={{marginBottom: 5}} />
+      </div>
+    </div>
+  )
+}
 
 export const CategoriasCardList = (props) => {
   const { categorias, onEdit, onRemove, onExport, onImport } = props;
