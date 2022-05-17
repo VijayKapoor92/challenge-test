@@ -62,7 +62,7 @@ function AddProdutoView(props) {
       </div>
       <ModalActions
         labels={{
-          deny: "Cancelar",
+          deny: "Fechar",
           accept: "Adicionar"
         }}
         onAgree={() => {
