@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
 import { CategoriasAPI } from "../../../api";
+import { ModalActions } from "../../../components";
 
 const FormGroup = styled.div `
   margin-bottom: .6rem;
@@ -94,23 +95,17 @@ function EditProdutoView(props) {
           <input id="vl_produto" ref={vlRef} />
         </FormGroup>
       </div>
-      <div>
-        <button 
-          type="button" 
-          onClick={onDisagree}
-        >
-          Não
-        </button>
-        <button 
-          type="button" 
-          onClick={() => {
-            onAgree(getFieldsValues());
-            resetFields();
-          }}
-        >
-          Sim
-        </button>
-      </div>
+      <ModalActions
+        labels={{
+          deny: "Cancelar",
+          accept: "Atualizar"
+        }}
+        onDisagree={onDisagree}
+        onAgree={() => {
+          onAgree(getFieldsValues());
+          resetFields();
+        }}
+      />
     </>
   )
 }
