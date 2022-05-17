@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { Button, ButtonClose, ButtonModalAccept, ButtonModalDeny } from "../Buttons";
+import { Button, ButtonClose, ButtonDanger, ButtonDefault, ButtonModalAccept, ButtonModalDeny, ButtonSuccess } from "../Buttons";
 
 import { VscClose } from "react-icons/vsc";
 
@@ -70,16 +70,20 @@ const ModalActionsContainer = styled.div `
   width: 100%;
   justify-content: flex-end;
   align-items: center;
+
+  button:last-child {
+    margin-left: .5rem;
+  }
 `
 
 export const ModalActions = ({onAgree, onDisagree, labels = {deny: "", accept: ""}}) => {
   return (
     <ModalActionsContainer>
-      <ButtonModalDeny 
+      <ButtonDanger 
         label={labels.deny.length > 0 ? labels.deny : "Não"} 
         onClick={onDisagree} 
       />
-      <ButtonModalAccept 
+      <ButtonDefault
         label={labels.accept.length > 0 ? labels.accept : "Sim"} 
         onClick={onAgree}
       />
