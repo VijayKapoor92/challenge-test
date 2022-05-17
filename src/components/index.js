@@ -1,6 +1,7 @@
 import Container from "./Container";
 import ViewWrapper from "./ViewWrapper";
 import Modal, { ModalActions } from "./Modal";
+import FormGroup from "./FormGroup";
 import { Input, Select } from "./Fields";
 import {
   Button,
@@ -25,6 +26,7 @@ export {
   ViewWrapper,
   Modal,
   ModalActions,
+  FormGroup,
   Input,
   Select,
   Button,
