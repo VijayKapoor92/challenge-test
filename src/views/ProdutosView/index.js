@@ -1,22 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 import { 
-  ButtonDanger, 
   ButtonDefault,  
-  Modal
+  Modal,
+  Feedback
 } from "../../components";
 
 import AddProdutoView from "./AddProdutoView";
 import EditProdutoView from "./EditProdutoView";
 
-import { ProdutosCardList } from "./styled";
+import { ProdutosCardList, ProdutoCardSkeleton } from "./styled";
 
 import { ProdutosAPI } from "../../api";
 
-import image_not_found from "../../assets/img_not_found.png";
-
 function ProdutosView() {
+  const [loading, setLoading] = useState("loading");             // idle || loading
   const [produtos, setProdutos] = useState([]);
   const [modalAdd, setModalAdd] = useState({ open: false });
   const [modalEdit, setModalEdit] = useState({ 
@@ -35,6 +34,9 @@ function ProdutosView() {
     ProdutosAPI.getAll()
       .then(res => {
         setProdutos(res);
+        setTimeout(() => {
+          setLoading("idle");
+        }, 1000);
       })
       .catch(err => console.error(err));
   }, []);
@@ -160,20 +162,41 @@ function ProdutosView() {
   return (
     <div>
       <div style={{marginBottom: 16}}>
-        <h4>Produtos</h4>
-        <div>
-          <button type="button" onClick={handleOpenModalAdd}>
-            <VscAdd/>
-          </button>
-        </div>
+        <h4 style={{margin: 0, marginBottom: 5}}>Produtos</h4>
+        <ButtonDefault 
+          label="Adicionar produto" 
+          onClick={handleOpenModalAdd}
+          outlined
+        />
       </div>
 
       <div>
-        <ProdutosCardList 
-          produtos={produtos}
-          onEdit={handleOpenModalEdit}
-          onRemove={handleOpenConfirm}
-        />
+        {loading === "loading" && (
+          <div style={{display: "flex", gap: 16}}>
+            {[1,2,3].map(i => (
+              <ProdutoCardSkeleton key={i} />
+            ))}
+          </div>
+        )}
+        {loading === "idle" && produtos.length > 0 && (
+          <ProdutosCardList 
+            produtos={produtos}
+            onEdit={handleOpenModalEdit}
+            onRemove={handleOpenConfirm}
+          />
+        )}
+        {loading === "idle" && produtos.length === 0 && (
+          <Feedback 
+            title="Ainda não tem produto cadastrado?" 
+            icon={(
+              <FaRegQuestionCircle 
+                style={{fontSize: "1.1rem", marginRight: ".3rem"}} 
+              />
+            )}
+          >
+            Adicione seu primeiro produto clicando no botão <strong>Adicionar Produto</strong>.
+          </Feedback>
+        )}
       </div>
 
       <Modal

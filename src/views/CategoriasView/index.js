@@ -1,18 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
-import { VscAdd } from "react-icons/vsc";
+import { FaRegQuestionCircle } from "react-icons/fa";
 import { 
   Input, 
   Modal,
   FormGroup,
-  ButtonDefault
+  ButtonDefault,
+  Feedback
 } from "../../components";
 
-import { CategoriasCardList } from "./styled";
+import { 
+  CategoriasCardList, 
+  CategoriaCardSkeleton
+} from "./styled";
 
 import { CategoriasAPI, ProdutosAPI } from "../../api";
 import * as Utils from "../../utils";
 
 function CategoriasView() {
+  const [loading, setLoading] = useState("loading");             // idle || loading
   const [importID, setImportID] = useState(null);
   const [categorias, setCategorias] = useState([]);
   
@@ -36,7 +41,12 @@ function CategoriasView() {
   
   useEffect(() => {
     CategoriasAPI.getAll()
-      .then(res => setCategorias(res))
+      .then(res => {
+        setCategorias(res);
+        setTimeout(() => {
+          setLoading("idle");
+        }, 1000);
+      })
       .catch(err => console.error(err));
   }, []);
 
@@ -193,7 +203,7 @@ function CategoriasView() {
   }
 
   const handleExport = id_categoria => {
-    ProdutosAPI.export(id_categoria)
+    CategoriasAPI.export(id_categoria)
       .then(res => {
         // Creating a blob object from non-blob 
         // data using the Blob constructor
@@ -216,19 +226,42 @@ function CategoriasView() {
       </div>
 
       <div>
-        <input 
-          type="file" 
-          ref={importRef} 
-          onChange={handleChangeFile} 
-          style={{display: "none"}} 
-        />
-        <CategoriasCardList 
-          categorias={categorias}
-          onEdit={handleOpenModalEdit}
-          onRemove={handleOpenConfirm}
-          onExport={handleExport}
-          onImport={handleImport}
-        />
+        {loading === "loading" && (
+          <div style={{display: "flex", gap: 16}}>
+            {[1,2,3].map(i => (
+              <CategoriaCardSkeleton key={i} />
+            ))}
+          </div>
+        )}
+        {loading === "idle" && categorias.length > 0 && (
+          <>
+            <input 
+              type="file" 
+              ref={importRef} 
+              onChange={handleChangeFile} 
+              style={{display: "none"}} 
+            />
+            <CategoriasCardList 
+              categorias={categorias}
+              onEdit={handleOpenModalEdit}
+              onRemove={handleOpenConfirm}
+              onExport={handleExport}
+              onImport={handleImport}
+            />
+          </>
+        )}
+        {loading === "idle" && categorias.length === 0 && (
+          <Feedback 
+            title="Ainda não tem categoria cadastrada?" 
+            icon={(
+              <FaRegQuestionCircle 
+                style={{fontSize: "1.1rem", marginRight: ".3rem"}} 
+              />
+            )}
+          >
+            Adicione sua primeira categoria clicando no botão <strong>Adicionar Categoria</strong>.
+          </Feedback>
+        )}
       </div>
 
       <Modal
