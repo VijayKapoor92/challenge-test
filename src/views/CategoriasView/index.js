@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
+import { VscAdd } from "react-icons/vsc";
+import { 
+  Input, 
+  Modal
+} from "../../components";
 
-import { ButtonSuccess, ButtonDanger, ButtonDefault, Input, Modal } from "../../components";
+import { CategoriasCardList } from "./styled";
 
 import { CategoriasAPI, ProdutosAPI } from "../../api";
 import * as Utils from "../../utils";
-
-import image_not_found from "../../assets/img_not_found.png";
 
 function CategoriasView() {
   const [categorias, setCategorias] = useState([]);
@@ -57,8 +59,8 @@ function CategoriasView() {
     
     const handleSuccess = payload => {
       setCategorias([...categorias, payload[0]]);
-      input.value = "";
       handleCloseModalAdd();
+      input.value = "";
     }
 
     const handleError = err => {
@@ -78,11 +80,20 @@ function CategoriasView() {
 
   /* -- Begin: ModalEdit Methods -- */
   
-  const handleOpenModalEdit = payload =>
+  let timeoutFocus = null;
+  const handleOpenModalEdit = payload => {
     setModalEdit({
       open: true,
-      payload
+      payload: payload
     });
+
+    if (timeoutFocus)
+      clearTimeout(timeoutFocus);
+
+    timeoutFocus = setTimeout(() => {
+      editRef.current.focus();
+    }, 100);
+  }
   
   const handleCloseModalEdit = () =>
     setModalEdit({
@@ -95,8 +106,8 @@ function CategoriasView() {
     
     const handleSuccess = () => {
       setCategorias(categorias);
-      input.value = "";
       handleCloseModalEdit();
+      input.value = "";
     }
 
     const handleError = err => {
@@ -117,9 +128,9 @@ function CategoriasView() {
 
   /* -- End: ModalAdd Methods -- */
 
-  const handleDelete = (index) => {
-    const categoria = categorias.filter((c, i) => i === index)[0];
-    const _categorias = categorias.filter((c, i) => i !== index);
+  const handleDelete = id_categoria => {
+    const categoria = categorias.filter(c => c.id_categoria === id_categoria)[0];
+    const _categorias = categorias.filter(c => c.id_categoria !== id_categoria);
     
     CategoriasAPI.delete(categoria.id_categoria)
       .then(() => {
@@ -129,13 +140,13 @@ function CategoriasView() {
       .catch(err => console.error(err));
   }
 
-  const handleOpenConfirm = (index) => {
+  const handleOpenConfirm = id_categoria => {
     setConfirm(prevState => ({
       ...prevState,
       open: true,
       question: "Tem certeza que quer remover essa categoria?",
       onAgree: () => {
-        handleDelete(index);
+        handleDelete(id_categoria);
       },
       onDisagree: () => {
         handleCloseConfirm();
@@ -178,7 +189,7 @@ function CategoriasView() {
 
   return (
     <div>
-      <div>
+      <div style={{marginBottom: 16}}>
         <h4>Categorias</h4>
         <div>
           <button type="button" onClick={handleOpenModalAdd}>
@@ -195,69 +206,13 @@ function CategoriasView() {
           </button>
         </div>
       </div>
-      <div style={{paddingLeft: 0, paddingRight: 15}}>
-        <div style={{display: "flex", justifyContent: "space-between"}}>
-        {categorias.length > 0 && categorias.map((categoria, index) => {
-            return (
-              <div key={categoria.id_categoria} style={{width: "20%", maxWidth: "20%", flexBasis: "20%", height: 250, marginBottom: 20}}>
-                <div style={{backgroundColor: "#FFFFFF", border: "1px solid rgba(0, 0, 0, .24)", borderRadius: ".2rem"}}>
-                  <div 
-                    style={{
-                      width: "100%", 
-                      height: 150, 
-                      position: "relative", 
-                      backgroundImage: `url(${image_not_found})`, 
-                      backgroundRepeat: "no-repeat", 
-                      backgroundSize: "cover",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "flex-end"
-                    }}
-                  >
-                    <div 
-                      style={{
-                        position: "absolute", 
-                        top: 0, 
-                        right: 0, 
-                        bottom: 0, 
-                        left: 0, 
-                        zIndex: 1,
-                        backgroundImage: "linear-gradient(to bottom, transparent, #757575)"
-                      }} 
-                    />
-                    {/* <img
-                      src={image_not_found} 
-                      alt="Not found" 
-                      style={{
-                        width: "inherit", 
-                        height: "inherit",
-                        zIndex: -1
-                      }} 
-                    /> */}
 
-                    <div style={{color: "#FFFFFF", fontWeight: "bold", zIndex: 2, marginLeft: 5, marginBottom: 5}}>
-                      {categoria.nm_categoria}
-                    </div>
-                  </div>
-                  <div style={{display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 15, paddingBottom: 15}}>
-                    <ButtonDefault
-                      label="Editar"
-                      icon={<VscEdit/>}
-                      onClick={() => handleOpenModalEdit(categoria)}
-                      width="75%"
-                    />
-                    <ButtonDanger
-                      label="Remover"
-                      icon={<VscTrash/>}
-                      onClick={() => handleOpenConfirm(index)}
-                      width="75%"
-                    />
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-          </div>
+      <div>
+        <CategoriasCardList 
+          categorias={categorias}
+          onEdit={handleOpenModalEdit}
+          onRemove={handleDelete}
+        />
       </div>
 
       <Modal
@@ -275,8 +230,9 @@ function CategoriasView() {
         content={(
           <Input 
             ref={editRef} 
-            defaultValue={modalEdit.payload ? modalEdit.payload.nm_categoria: ""} 
-            onChange={undefined} 
+            onFocus={() => {
+              editRef.current.value = modalEdit.payload.nm_categoria;
+            }}
           />
         )}
         onAgree={() => handleEdit()}
