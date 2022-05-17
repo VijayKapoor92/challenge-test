@@ -8,7 +8,7 @@ const FormGroup = styled.div `
   margin-bottom: .6rem;
 
   > label {
-    font-size: x-small;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
   }
