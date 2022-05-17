@@ -83,7 +83,7 @@ function ProdutosView() {
       return;
     
     const handleSuccess = payload => {
-      setProdutos([...produtos, payload[0]]);
+      setProdutos([...produtos, payload]);
       handleCloseModalAdd();
     }
 
