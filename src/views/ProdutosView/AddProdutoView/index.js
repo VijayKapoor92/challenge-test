@@ -48,15 +48,15 @@ function AddProdutoView(props) {
           </Select>
         </FormGroup>
         <FormGroup>
-          <label htmlFor="nm_produto">Nome:</label>
+          <label htmlFor="nm_produto">Nome</label>
           <Input ref={nameRef} />
         </FormGroup>
         <FormGroup>
-          <label htmlFor="qt_produto">Quantidade:</label>
+          <label htmlFor="qt_produto">Quantidade</label>
           <Input type="number" ref={qtRef} id="qt_produto" />
         </FormGroup>
         <FormGroup>
-          <label htmlFor="qt_produto">Valor:</label>
+          <label htmlFor="qt_produto">Valor</label>
           <Input id="vl_produto" ref={vlRef} />
         </FormGroup>
       </div>
