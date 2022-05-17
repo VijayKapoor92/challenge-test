@@ -18,11 +18,6 @@ import image_not_found from "../../assets/img_not_found.png";
 
 function ProdutosView() {
   const [produtos, setProdutos] = useState([]);
-  const [action, setAction] = useState({
-    name: "",
-    status: "idle",
-    index: null
-  });
   const [modalAdd, setModalAdd] = useState({ open: false });
   const [modalEdit, setModalEdit] = useState({ 
     open: false,
@@ -35,9 +30,6 @@ function ProdutosView() {
     onDisagree: undefined,
     onAgree: undefined
   });
-
-  const addRef = useRef();
-  const editRef = useRef();
   
   useEffect(() => {
     ProdutosAPI.getAll()
@@ -60,14 +52,6 @@ function ProdutosView() {
     }
 
     return bo;
-  }
-
-  const handleAction = ({name, status, index}) => {
-    setAction({
-      name: name,
-      status: status,
-      index: index
-    });
   }
 
   /* -- Begin: ModalAdd Methods -- */
@@ -140,14 +124,6 @@ function ProdutosView() {
   }
 
   /* -- End: ModalAdd Methods -- */
-
-  const handleCloseModal = () => {
-    handleAction({
-      name: "", 
-      index: null,
-      status: "idle"
-    });
-  }
 
   const handleDelete = id_produto => {
     const _produtos = produtos.filter(p => p.id_produto !== id_produto);
