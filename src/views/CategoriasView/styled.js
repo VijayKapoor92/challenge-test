@@ -8,7 +8,9 @@ import {
   CardList,
   CardListItem,
   ButtonDanger,
-  ButtonDefault
+  ButtonDefault,
+  ButtonPrimary,
+  ButtonWarning
 } from "../../components";
 
 const CategoriaIcon = styled(VscTag) `
@@ -40,12 +42,12 @@ const CardDetails = styled.div `
 `;
 
 export const CategoriasCardList = (props) => {
-  const { categorias, onEdit, onRemove } = props;
+  const { categorias, onEdit, onRemove, onExport, onImport } = props;
   return (
     <CardList>
       {categorias.length > 0 && categorias.map(categoria => {
         return (
-          <CardListItem>
+          <CardListItem key={categoria.id_categoria}>
             <Card>
               <CardHeader>
                 <CategoriaIcon />
@@ -60,11 +62,23 @@ export const CategoriasCardList = (props) => {
                   label="Editar"
                   onClick={() => onEdit(categoria)}
                   width="75%"
+                  style={{marginBottom: 10}}
+                />
+                <ButtonPrimary
+                  label="Exportar"
+                  onClick={() => onExport(categoria.id_categoria)}
+                  width="75%"
+                />
+                <ButtonPrimary
+                  label="Importar"
+                  onClick={() => onImport(categoria.id_categoria)}
+                  width="75%"
                 />
                 <ButtonDanger 
                   label="Remover"
                   onClick={() => onRemove(categoria.id_categoria)}
                   width="75%"
+                  style={{marginTop: 10}}
                 />
               </CardActions>
             </Card>
