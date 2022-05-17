@@ -72,7 +72,7 @@ const ModalActionsContainer = styled.div `
   align-items: center;
 `
 
-const ModalActionDeny = styled(Button) `
+export const ModalActions = ({onAgree, onDisagree, labels = {deny: "", accept: ""}}) => {
   return (
     <ModalActionsContainer>
       <ButtonModalDeny 
