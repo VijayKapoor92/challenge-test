@@ -2,24 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
 import { CategoriasAPI } from "../../../api";
-import { ModalActions, Input } from "../../../components";
-
-const FormGroup = styled.div `
-  margin-bottom: .6rem;
-
-  > label {
-    font-size: x-small;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  > select {
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, .24);
-    border-radius: .2rem;
-    padding: .4rem;
-  }
-`;
+import { ModalActions, Input, Select, FormGroup } from "../../../components";
 
 function EditProdutoView(props) {
   const {onAgree, onDisagree, produto} = props;
@@ -66,14 +49,14 @@ function EditProdutoView(props) {
       <div style={{paddingRight: "1rem"}}>
         <FormGroup style={{marginRight: "-1rem"}}>
           <label htmlFor="id_categoria">Categoria:</label>
-          <select ref={categoriaRef} id="id_categoria">
+          <Select ref={categoriaRef} id="id_categoria">
             <option value="" disabled>Escolher...</option>
             {categorias.length > 0 && categorias.map(categoria => (
               <option key={categoria.id_categoria} value={categoria.id_categoria}>
                 {categoria.nm_categoria}
               </option>
             ))}
-          </select>
+          </Select>
         </FormGroup>
         <FormGroup>
           <label htmlFor="nm_produto">Nome:</label>
