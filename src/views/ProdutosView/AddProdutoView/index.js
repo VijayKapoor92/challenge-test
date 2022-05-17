@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import styled from "styled-components";
 
 import { CategoriasAPI } from "../../../api";
 import { ModalActions, Input, Select, FormGroup } from "../../../components";

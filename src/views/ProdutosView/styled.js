@@ -53,29 +53,6 @@ const Title = styled.div `
   white-space: nowrap;*/
 `;
 
-const CardDetails = styled.div `
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #CFD8DC;
-  height: 60px;
-  
-  padding: 15px 10px;
-
-  & > div:first-child {
-    font-size: 1.3rem;
-    color: #607D8B;
-    font-weight: bold;
-  }
-
-  & > div:last-child {
-    color: #607D8B;
-    font-weight: bold;
-  }
-`;
-
 const getBadgeColor = (qt) => {
   let a = parseInt(qt, 10);
   

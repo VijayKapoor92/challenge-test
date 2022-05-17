@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { Button, ButtonClose, ButtonDanger, ButtonDefault, ButtonModalAccept, ButtonModalDeny, ButtonSuccess } from "../Buttons";
+import { ButtonClose, ButtonDanger, ButtonDefault } from "../Buttons";
 
 import { VscClose } from "react-icons/vsc";
 
