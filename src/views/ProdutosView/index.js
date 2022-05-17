@@ -1,11 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { VscTrash, VscEdit, VscAdd } from "react-icons/vsc";
 
-import { Modal } from "../../components";
+import { 
+  ButtonDanger, 
+  ButtonDefault,  
+  Modal
+} from "../../components";
+
 import AddProdutoView from "./AddProdutoView";
 import EditProdutoView from "./EditProdutoView";
 
+import { ProdutosCardList } from "./styled";
+
 import { ProdutosAPI } from "../../api";
+
+import image_not_found from "../../assets/img_not_found.png";
 
 function ProdutosView() {
   const [produtos, setProdutos] = useState([]);
@@ -13,6 +22,11 @@ function ProdutosView() {
     name: "",
     status: "idle",
     index: null
+  });
+  const [modalAdd, setModalAdd] = useState({ open: false });
+  const [modalEdit, setModalEdit] = useState({ 
+    open: false,
+    payload: null
   });
   const [confirm, setConfirm] = useState({
     open: false,
@@ -56,6 +70,77 @@ function ProdutosView() {
     });
   }
 
+  /* -- Begin: ModalAdd Methods -- */
+
+  const handleOpenModalAdd = () => 
+    setModalAdd({ open: true });
+  
+  const handleCloseModalAdd = () =>
+    setModalAdd({ open: false });
+
+  const handleAdd = fieldsValues => {
+    if (!validate(fieldsValues))
+      return;
+    
+    const handleSuccess = payload => {
+      setProdutos([...produtos, payload[0]]);
+      handleCloseModalAdd();
+    }
+
+    const handleError = err => {
+      console.error(err);
+      handleCloseModalAdd();
+    }
+
+    ProdutosAPI.add(fieldsValues)
+      .then(handleSuccess)
+      .catch(handleError);
+  }
+
+  /* -- End: ModalAdd Methods -- */
+
+  /* -- Begin: ModalEdit Methods -- */
+  
+  const handleOpenModalEdit = payload =>
+    setModalEdit({
+      open: true,
+      payload
+    });
+  
+  const handleCloseModalEdit = () =>
+    setModalEdit({
+      open: false,
+      payload: null
+    });
+
+  const handleEdit = fieldsValues => {
+    if (!validate(fieldsValues))
+      return;
+
+    const handleSuccess = () => {
+      setProdutos(produtos);
+      handleCloseModalEdit();
+    }
+
+    const handleError = err => {
+      console.error(err);
+      handleCloseModalEdit();
+    }
+    
+    let produto = modalEdit.payload;
+    produto.nm_produto = fieldsValues["nm_produto"];
+    produto.qt_produto = fieldsValues["qt_produto"];
+    produto.vl_produto = fieldsValues["vl_produto"];
+    produto.id_categoria = fieldsValues["id_categoria"];
+    produto.nm_categoria = fieldsValues["nm_categoria"];
+
+    ProdutosAPI.edit(produto)
+      .then(handleSuccess)
+      .catch(handleError);
+  }
+
+  /* -- End: ModalAdd Methods -- */
+
   const handleCloseModal = () => {
     handleAction({
       name: "", 
@@ -64,49 +149,10 @@ function ProdutosView() {
     });
   }
 
-  const handleAdd = fieldsValues => {
-    if (!validate(fieldsValues))
-      return;
-
-    ProdutosAPI.add(fieldsValues)
-      .then(res => {
-        handleCloseModal();
-        setProdutos([...produtos, res[0]]);
-      })
-      .catch(err => console.error(err));
-  }
-
-  const handleEdit = fieldsValues => {
-    if (!validate(fieldsValues))
-      return;
+  const handleDelete = id_produto => {
+    const _produtos = produtos.filter(p => p.id_produto !== id_produto);
     
-    produtos.map((p, i) => {
-      if (i === action.index) {
-        p.nm_produto = fieldsValues["nm_produto"];
-        p.qt_produto = fieldsValues["qt_produto"];
-        p.vl_produto = fieldsValues["vl_produto"];
-        p.id_categoria = fieldsValues["id_categoria"];
-        p.nm_categoria = fieldsValues["nm_categoria"];
-      }
-      
-      return p;
-    });
-
-    const produto = produtos.filter((p, i) => i === action.index)[0];
-    
-    ProdutosAPI.edit(produto)
-      .then(res => {
-        setProdutos([...produtos]);
-        handleCloseModal();
-      })
-      .catch(err => console.error(err));
-  }
-
-  const handleDelete = (index) => {
-    const produto = produtos.filter((p, i) => i === index)[0];
-    const _produtos = produtos.filter((p, i) => i !== index);
-    
-    ProdutosAPI.delete(produto.id_produto)
+    ProdutosAPI.delete(id_produto)
       .then(res => {
         setProdutos(_produtos);
         handleCloseConfirm();
@@ -114,13 +160,13 @@ function ProdutosView() {
       .catch(err => console.error(err));
   }
 
-  const handleOpenConfirm = (index) => {
+  const handleOpenConfirm = id_produto => {
     setConfirm(prevState => ({
       ...prevState,
       open: true,
       question: "Tem certeza que quer remover esse produto?",
       onAgree: () => {
-        handleDelete(index);
+        handleDelete(id_produto);
       },
       onDisagree: () => {
         handleCloseConfirm();
@@ -137,65 +183,47 @@ function ProdutosView() {
 
   return (
     <div>
-      <div>
+      <div style={{marginBottom: 16}}>
         <h4>Produtos</h4>
         <div>
-          <button type="button" onClick={() => handleAction({name: "add"})}>
+          <button type="button" onClick={handleOpenModalAdd}>
             <VscAdd/>
           </button>
         </div>
       </div>
+
       <div>
-        <ul>
-          {produtos.length > 0 && produtos.map((produto, index) => {
-            return (
-              <li key={index}>
-                <div>
-                  <span>{produto.nm_produto}</span>
-                  <span>{produto.qt_produto}</span>
-                  <span>{produto.vl_produto}</span>
-                  <span>{produto.nm_categoria}</span>
-                  <span>
-                    <button type="button" onClick={() => handleAction({name: "edit", index})}>
-                      <VscEdit/>
-                    </button>
-                  </span>
-                  <span>
-                    <button type="button" onClick={() => handleOpenConfirm(index)} style={{backgroundColor: "red"}}>
-                      <VscTrash/>
-                    </button>
-                  </span>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
+        <ProdutosCardList 
+          produtos={produtos}
+          onEdit={handleOpenModalEdit}
+          onRemove={handleOpenConfirm}
+        />
       </div>
 
       <Modal
-        open={action.name !== "" && action.name === "add"}
+        open={modalAdd.open}
         title="Cadastrar produto"
         ModalContentView={(
           <AddProdutoView
             onAgree={(fieldsValues) => handleAdd(fieldsValues)}
-            onDisagree={() => handleCloseModal()}
+            onDisagree={handleCloseModalAdd}
           />
         )}
-        onClose={() => handleCloseModal()}
+        onClose={handleCloseModalAdd}
         disableActions
       />
 
       <Modal
-        open={action.name !== "" && action.name === "edit"}
+        open={modalEdit.open}
         title="Editar produto"
         ModalContentView={(
           <EditProdutoView
-            produto={produtos.filter((p, i) => i === action.index)[0]}
-            onAgree={(fieldsValues) => handleEdit(fieldsValues)}
-            onDisagree={() => handleCloseModal()}
+            produto={modalEdit.payload ? modalEdit.payload : {}}
+            onAgree={handleEdit}
+            onDisagree={handleCloseModalEdit}
           />
         )}
-        onClose={() => handleCloseModal()}
+        onClose={handleCloseModalEdit}
         disableActions
       />
 
