@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 
 import { CategoriasAPI } from "../../../api";
-import { ModalActions } from "../../../components";
+import { ModalActions, Input } from "../../../components";
 
 const FormGroup = styled.div `
   margin-bottom: .6rem;
@@ -73,15 +73,15 @@ function AddProdutoView(props) {
         </FormGroup>
         <FormGroup>
           <label htmlFor="nm_produto">Nome:</label>
-          <input ref={nameRef} id="nm_produto" />
+          <Input ref={nameRef} />
         </FormGroup>
         <FormGroup>
           <label htmlFor="qt_produto">Quantidade:</label>
-          <input type="number" ref={qtRef} id="qt_produto" />
+          <Input type="number" ref={qtRef} id="qt_produto" />
         </FormGroup>
         <FormGroup>
           <label htmlFor="qt_produto">Valor:</label>
-          <input id="vl_produto" ref={vlRef} />
+          <Input id="vl_produto" ref={vlRef} />
         </FormGroup>
       </div>
       <ModalActions
