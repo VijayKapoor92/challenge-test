@@ -13,13 +13,6 @@ const FormGroup = styled.div `
     text-transform: uppercase;
   }
 
-  > input {
-    width: 96%;
-    border: 1px solid rgba(0, 0, 0, .24);
-    border-radius: .2rem;
-    padding: .4rem;
-  }
-
   > select {
     width: 100%;
     border: 1px solid rgba(0, 0, 0, .24);
