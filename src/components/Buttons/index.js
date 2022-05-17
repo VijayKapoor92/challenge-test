@@ -28,6 +28,14 @@ export const Button = styled.button.attrs(props => ({
   transition: background-color 150ms ease-in-out;
 
   cursor: pointer;
+
+  &:disabled {
+    opacity: .5;
+  }
+  &:disabled:hover {
+    background-color: transparent;
+    cursor: not-allowed;
+  }
 `;
 
 export const ButtonDefault = styled(Button)`
