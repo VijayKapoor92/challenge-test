@@ -43,6 +43,12 @@ export const
     }
 
     return novastr;
-  }
+  },
+
+  removeAllSpaces = (str) => 
+    str.replace(/\s/g, ""),
+
+  setFileName = str =>
+    retiraAcentos(removeAllSpaces(str))
 
 ;
