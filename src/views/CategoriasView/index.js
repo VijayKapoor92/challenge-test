@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { VscAdd } from "react-icons/vsc";
 import { 
   Input, 
-  Modal
+  Modal,
+  FormGroup
 } from "../../components";
 
 import { CategoriasCardList } from "./styled";
@@ -218,7 +219,12 @@ function CategoriasView() {
       <Modal
         open={modalAdd.open}
         title="Cadastrar categoria"
-        content={<Input ref={addRef} />}
+        content={(
+          <FormGroup>
+            <label htmlFor="nm_categoria">Nome</label>
+            <Input ref={addRef} id="nm_categoria" />
+          </FormGroup>
+        )}
         onAgree={() => handleAdd()}
         onDisagree={handleCloseModalAdd}
         onClose={handleCloseModalAdd}
