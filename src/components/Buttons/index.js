@@ -9,7 +9,7 @@ export const Button = styled.button.attrs(props => ({
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   
-    width: ${props => props.width || "70px"};
+  width: ${props => props.width || "auto"};
 
   padding: .2rem .5rem;
 
@@ -103,5 +103,18 @@ export const ButtonIcon = styled.button.attrs(props => ({
   &:hover {
     background-color: #F5F5F5;
     color: #000000;
+  }
+`;
+
+export const ButtonModalDeny = styled(Button) `
+  &:hover {
+    background-color: #FFEBEE;
+  }
+`;
+
+export const ButtonModalAccept = styled(Button) `
+  margin-left: .5rem;
+  &:hover {
+    background-color: #E8F5E9;
   }
 `;
