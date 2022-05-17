@@ -110,6 +110,22 @@ export const ProdutoCardSkeleton = () => {
   )
 }
 
+const Badge = styled.div.attrs(props => ({
+  children: props.value
+})) `
+  position: absolute;
+  top: 5px;
+  right: 5px;
+
+  font-size: small;
+  padding: 3px 6px;
+
+  border-radius: 3px;
+
+  background-color: ${props => getBadgeColor(props.value)};
+  color: #FFFFFF;
+`;
+
 export const ProdutosCardList = (props) => {
   const { produtos, onEdit, onRemove } = props;
 
@@ -122,6 +138,7 @@ export const ProdutosCardList = (props) => {
               <CardHeaderImage image={img_not_found}>
                 <FadedOverlay />
                 <Title>{produto.nm_produto}</Title>
+                <Badge />
                 <div style={{position: "absolute", top: 5, right: 5, backgroundColor: getBadgeColor(produto.qt_produto), fontSize: "small", padding: "3px 6px", borderRadius: 3, color: "white"}}>
                   {produto.qt_produto}
                 </div>

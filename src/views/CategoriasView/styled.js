@@ -88,6 +88,7 @@ export const CategoriasCardList = (props) => {
                   label="Exportar"
                   onClick={() => onExport(categoria.id_categoria)}
                   width="75%"
+                  disabled={parseInt(categoria.tl_produtos, 10) === 0}
                 />
                 <ButtonPrimary
                   label="Importar"
@@ -98,6 +99,7 @@ export const CategoriasCardList = (props) => {
                   label="Remover"
                   onClick={() => onRemove(categoria.id_categoria)}
                   width="75%"
+                  disabled={parseInt(categoria.tl_produtos, 10) > 0}
                   style={{marginTop: 10}}
                 />
               </CardActions>
