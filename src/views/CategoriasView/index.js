@@ -3,7 +3,8 @@ import { VscAdd } from "react-icons/vsc";
 import { 
   Input, 
   Modal,
-  FormGroup
+  FormGroup,
+  ButtonDefault
 } from "../../components";
 
 import { CategoriasCardList } from "./styled";
@@ -201,12 +202,12 @@ function CategoriasView() {
   return (
     <div>
       <div style={{marginBottom: 16}}>
-        <h4>Categorias</h4>
-        <div>
-          <button type="button" onClick={handleOpenModalAdd}>
-            <VscAdd/>
-          </button>
-        </div>
+        <h4 style={{margin: 0, marginBottom: 5}}>Categorias</h4>
+        <ButtonDefault
+          label="Adicionar categoria"
+          onClick={handleOpenModalAdd}
+          outlined
+        />
       </div>
 
       <div>
