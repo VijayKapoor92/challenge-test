@@ -22,6 +22,8 @@ import {
   CardList, 
   CardListItem 
 } from "./Card";
+import Loader, { Skeleton } from "./Loader";
+import Feedback from "./Feedback";
 
 export {
   Container,
@@ -45,5 +47,8 @@ export {
   CardActions, 
   CardHeader, 
   CardList, 
-  CardListItem
+  CardListItem,
+  Loader,
+  Skeleton,
+  Feedback
 }
