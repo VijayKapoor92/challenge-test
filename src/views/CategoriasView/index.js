@@ -12,6 +12,7 @@ import { CategoriasAPI, ProdutosAPI } from "../../api";
 import * as Utils from "../../utils";
 
 function CategoriasView() {
+  const [importID, setImportID] = useState(null);
   const [categorias, setCategorias] = useState([]);
   
   const [modalAdd, setModalAdd] = useState({ open: false });
@@ -162,7 +163,6 @@ function CategoriasView() {
     }));
   }
 
-  const [importID, setImportID] = useState(null);
   const handleChangeFile = e => {
     const file = e.target.files[0];
     if (file.type !== "application/json") {
