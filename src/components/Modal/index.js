@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { Button, ButtonClose } from "../Buttons";
+import { Button, ButtonClose, ButtonModalAccept, ButtonModalDeny } from "../Buttons";
 
 import { VscClose } from "react-icons/vsc";
 
@@ -73,27 +73,14 @@ const ModalActionsContainer = styled.div `
 `
 
 const ModalActionDeny = styled(Button) `
-  &:hover {
-    background-color: #FFEBEE;
-  }
-`;
-
-const ModalActionAccept = styled(Button) `
-  margin-left: .5rem;
-  &:hover {
-    background-color: #E8F5E9;
-  }
-`;
-
-const ModalActions = ({onAgree, onDisagree}) => {
   return (
     <ModalActionsContainer>
-      <ModalActionDeny 
-        label="Não" 
+      <ButtonModalDeny 
+        label={labels.deny.length > 0 ? labels.deny : "Não"} 
         onClick={onDisagree} 
       />
-      <ModalActionAccept 
-        label="Sim"
+      <ButtonModalAccept 
+        label={labels.accept.length > 0 ? labels.accept : "Sim"} 
         onClick={onAgree}
       />
     </ModalActionsContainer>
