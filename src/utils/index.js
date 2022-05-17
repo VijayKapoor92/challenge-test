@@ -1,8 +1,7 @@
 export const 
   
-  setBlob = data => {
-    return new Blob([ JSON.stringify(data) ], { type: 'application/json' });
-  },
+  setBlob = data =>
+    new Blob([ JSON.stringify(data) ], { type: 'application/json' }),
 
   downloadBlob = (blob, filename) => {
     const url = URL.createObjectURL(blob);
