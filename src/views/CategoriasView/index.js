@@ -173,7 +173,12 @@ function CategoriasView() {
 
     ProdutosAPI.import({file: importRef.current.files[0], id_categoria: importID})
       .then(res => {
-        console.log(res);
+        let _categorias = categorias.filter(c => c.id_categoria === importID).map(c => {
+          c.tl_produtos = parseInt(c.tl_produtos, 10) + parseInt(res.payload.length, 10)  
+          return categorias;
+        })[0];
+        
+        setCategorias(_categorias);
         setImportID(null);
       })
       .then(err => {
