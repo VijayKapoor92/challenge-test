@@ -56,15 +56,6 @@ const ProdutosAPI = {
     }
   },
 
-  export: async (id_categoria) => {
-    try {
-      const { data } = await api.post(`/produtos/${id_categoria}/export`);
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
 }
 
 export default ProdutosAPI;

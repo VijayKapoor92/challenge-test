@@ -36,6 +36,15 @@ const CategoriasAPI = {
     } catch (error) {
       console.error(error);
     }
+  },
+
+  export: async (id_categoria) => {
+    try {
+      const { data } = await api.post(`/categorias/${id_categoria}/export`);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 }
