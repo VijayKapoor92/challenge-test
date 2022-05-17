@@ -36,6 +36,13 @@ export const ButtonDefault = styled(Button)`
   }
 `;
 
+export const ButtonPrimary = styled(Button)`
+  color: #1565C0;
+  &:hover {
+    background-color: #E3F2FD;
+  }
+`;
+
 export const ButtonSuccess = styled(Button) `
   color: #2E7D32;
   &:hover {
@@ -47,6 +54,13 @@ export const ButtonDanger = styled(Button)`
   color: #C62828;  
   &:hover {
     background-color: #FFEBEE;
+  }
+`;
+
+export const ButtonWarning = styled(Button)`
+  color: #F9A825;  
+  &:hover {
+    background-color: #FFFDE7;
   }
 `;
 
