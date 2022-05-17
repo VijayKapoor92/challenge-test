@@ -35,8 +35,8 @@ function AddProdutoView(props) {
 
   return (
     <>
-      <div>
-        <FormGroup>
+      <div style={{paddingRight: "1rem"}}>
+        <FormGroup style={{marginRight: "-1rem"}}>
           <label htmlFor="id_categoria">Categoria</label>
           <Select ref={categoriaRef} id="id_categoria" defaultValue="">
             <option value="" disabled>Escolher...</option>
