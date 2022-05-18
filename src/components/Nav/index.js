@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import Container from "../Container";
 
 const links = ([
   { name: "Categorias", to: "/" },
@@ -9,11 +10,16 @@ const links = ([
 
 const Header = styled.header `
   width: 100%;
+
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  
+  background-color: #FAFAFA;
 `;
 
 const Toolbar = styled.div `
   height: 56px;
-  margin-bottom: 1rem;
 
   display: flex;
   align-items: center;
@@ -65,13 +71,15 @@ const Nav = () => {
 
   return (
     <Header>
-      <Toolbar>
-        {links.map(link => (
-          <TabLink key={link.name} to={link.to} className={link.name === title ? "active" : ""}>
-            {link.name}
-          </TabLink>
-        ))}
-      </Toolbar>
+      <Container>
+        <Toolbar>
+          {links.map(link => (
+            <TabLink key={link.name} to={link.to} className={link.name === title ? "active" : ""}>
+              {link.name}
+            </TabLink>
+          ))}
+        </Toolbar>
+      </Container>
     </Header>
   )
 }
