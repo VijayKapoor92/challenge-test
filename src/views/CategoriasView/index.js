@@ -118,7 +118,7 @@ function CategoriasView() {
     const input = addRef.current;
     
     const handleSuccess = payload => {
-      setCategorias([...categorias, payload[0]]);
+      setCategorias([...categorias, payload]);
       handleCloseModalAdd();
       input.value = "";
     }
