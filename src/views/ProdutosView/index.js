@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaRegQuestionCircle } from "react-icons/fa";
 
 import { 
   ButtonDefault,  
   Modal,
-  Feedback
+  Feedback,
+  Select,
+  FormGroup,
+  Container
 } from "../../components";
 
 import AddProdutoView from "./AddProdutoView";
@@ -12,12 +15,47 @@ import EditProdutoView from "./EditProdutoView";
 
 import { ProdutosCardList, ProdutoCardSkeleton } from "./styled";
 
-import { ProdutosAPI } from "../../api";
+import { ProdutosAPI, CategoriasAPI } from "../../api";
+import styled, { css } from "styled-components";
+
+const PageHeader = styled.div.attrs(props => ({
+  children: (
+    <Container>
+      <ButtonDefault 
+        label="Adicionar produto" 
+        onClick={props.onOpenModal}
+        outlined
+        style={{marginRight: 15}}
+      />
+      <ButtonDefault 
+        label="Importar produtos" 
+        onClick={props.onOpenModalImport}
+        outlined
+      />
+    </Container>
+  )
+}))`
+  padding-top: 1rem; 
+  padding-bottom: 1rem; 
+  position: sticky; 
+  top: 56px; 
+  background-color: #FAFAFA; 
+  z-index: 50;
+
+  ${props => {
+    if (props.elevate)
+      return css `
+        box-shadow: 0 5px 0 0 rgba(0,0,0,.2);
+      `;
+  }}
+`;
 
 function ProdutosView() {
   const [loading, setLoading] = useState("loading");             // idle || loading
   const [produtos, setProdutos] = useState([]);
+  const [categorias, setCategorias] = useState([]);
   const [modalAdd, setModalAdd] = useState({ open: false });
+  const [modalImport, setModalImport] = useState({ open: false });
   const [modalEdit, setModalEdit] = useState({ 
     open: false,
     payload: null
@@ -29,6 +67,9 @@ function ProdutosView() {
     onDisagree: undefined,
     onAgree: undefined
   });
+
+  const importRef = useRef(null);
+  const categoriaRef = useRef(null);
   
   useEffect(() => {
     ProdutosAPI.getAll()
@@ -40,6 +81,36 @@ function ProdutosView() {
       })
       .catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    if (!modalImport.open)
+      return;
+
+    CategoriasAPI.getAll()
+      .then(res => setCategorias(res))
+      .catch(err => console.error(err));
+  }, [modalImport.open]);
+  
+  const [elevate, setElevate] = useState(false);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
+
+  const handleScroll = () => {
+    let doIt = null;
+    if (window.scrollY > 66)
+      doIt = true;
+    else
+      doIt = false;
+    
+    setElevate(doIt);
+  }
+
+  console.log(elevate);
 
   const validate = fieldsValues => {
     const keys = Object.keys(fieldsValues);
@@ -159,17 +230,74 @@ function ProdutosView() {
     }));
   }
 
+  /* --- Begin: Import --- */
+
+  let timeoutSuccess = null;
+  const handleChangeFile = e => {
+    const file = e.target.files[0];
+    
+    const handleSuccess = ({payload}) => {
+      setProdutos([...produtos, ...payload]);
+      handleCloseModalImport();
+
+      if (timeoutSuccess)
+        clearTimeout(timeoutSuccess);
+      
+      timeoutSuccess = setTimeout(() => {
+        categoriaRef.current.value = "";
+        importRef.current.value = "";
+      }, 100);
+    }
+
+    const handleError = err => {
+      console.error(err);
+      handleCloseModalImport();
+      
+      if (timeoutSuccess)
+        clearTimeout(timeoutSuccess);
+      
+      timeoutSuccess = setTimeout(() => {
+        categoriaRef.current.value = "";
+        importRef.current.value = "";
+      }, 500);
+    }
+
+    if (file.type !== "application/json") {
+      alert("O arquivo deve ser em formato json \n Ex.: [{ \"nm_produto\": \"\", \"qt_produto\": \"\", \"vl_produto\": \"\" }]");
+      return;
+    }
+
+    ProdutosAPI.import({file: importRef.current.files[0], id_categoria: categoriaRef.current.value})
+      .then(handleSuccess)
+      .then(handleError);
+  }
+
+  const handleImport = () => {
+    importRef.current.click();
+  }
+
+  const handleOpenModalImport = () => {
+    setModalImport({
+      open: true
+    });
+  }
+  const handleCloseModalImport = () => {
+    setModalImport({
+      open: false
+    });
+  }
+
+  /* --- End: Import --- */
+
   return (
     <div>
-      <div style={{marginBottom: 16}}>
-        <ButtonDefault 
-          label="Adicionar produto" 
-          onClick={handleOpenModalAdd}
-          outlined
-        />
-      </div>
+      <PageHeader
+        elevate={elevate}
+        onOpenModal={handleOpenModalAdd}
+        onOpenModalImport={handleOpenModalImport}
+      />
 
-      <div>
+      <Container>
         {loading === "loading" && (
           <div style={{display: "flex", gap: 16}}>
             {[1,2,3].map(i => (
@@ -178,11 +306,19 @@ function ProdutosView() {
           </div>
         )}
         {loading === "idle" && produtos.length > 0 && (
-          <ProdutosCardList 
-            produtos={produtos}
-            onEdit={handleOpenModalEdit}
-            onRemove={handleOpenConfirm}
-          />
+          <>
+            <input 
+              type="file" 
+              ref={importRef} 
+              onChange={handleChangeFile} 
+              style={{display: "none"}} 
+            />
+            <ProdutosCardList 
+              produtos={produtos}
+              onEdit={handleOpenModalEdit}
+              onRemove={handleOpenConfirm}
+            />
+          </>
         )}
         {loading === "idle" && produtos.length === 0 && (
           <Feedback 
@@ -196,7 +332,7 @@ function ProdutosView() {
             Adicione seu primeiro produto clicando no botão <strong>Adicionar Produto</strong>.
           </Feedback>
         )}
-      </div>
+      </Container>
 
       <Modal
         open={modalAdd.open}
@@ -231,6 +367,29 @@ function ProdutosView() {
         content={confirm.question}
         onAgree={confirm.onAgree}
         onDisagree={confirm.onDisagree}
+      />
+
+      <Modal
+        open={modalImport.open}
+        title="Importar produtos"
+        content={(
+          <FormGroup>
+            <label htmlFor="id_categoria">Upload</label>
+            <Select ref={categoriaRef} id="id_categoria" defaultValue="">
+              <option value="" disabled>Escolher...</option>
+              {categorias.length > 0 && categorias.map(categoria => (
+                <option key={categoria.id_categoria} value={categoria.id_categoria}>
+                  {categoria.nm_categoria}
+                </option>
+              ))}
+            </Select>
+          </FormGroup>
+        )}
+        onAgree={handleImport}
+        onClose={handleCloseModalImport}
+        labels={{
+          accept: "Importar"
+        }}
       />
     </div>
   )
