@@ -4,7 +4,7 @@ export const Input = styled.input `
   width: 100%;
   border: 1px solid #757575;
   border-radius: .3rem;
-  padding: .4rem;
+  padding: .7rem .5rem;
   font-size: .84375rem;
   outline: 0;
 
@@ -19,7 +19,7 @@ export const Select = styled.select `
   width: 100%;
   border: 1px solid #757575;
   border-radius: .2rem;
-  padding: .4rem;
+  padding: .6rem .5rem;
   font-size: .84375rem;
   outline: 0;
 

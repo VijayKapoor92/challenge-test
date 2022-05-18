@@ -15,7 +15,7 @@ const FormGroup = styled.div `
 
   &:focus-within > label {
     color: #000000;
-    font-size: 12px;
+    font-size: 11px;
   }
 
 `;
