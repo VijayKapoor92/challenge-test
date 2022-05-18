@@ -263,15 +263,12 @@ function CategoriasView() {
 
   return (
     <div>
-        />
-      </div>
-
-      <div>
       <PageHeader
         elevate={elevate}
         onOpenModal={handleOpenModalAdd}
       />
 
+      <Container>
         {loading === "loading" && (
           <div style={{display: "flex", gap: 16}}>
             {[1,2,3].map(i => (
@@ -308,7 +305,7 @@ function CategoriasView() {
             Adicione sua primeira categoria clicando no botão <strong>Adicionar Categoria</strong>.
           </Feedback>
         )}
-      </div>
+      </Container>
 
       <Modal
         open={modalAdd.open}
