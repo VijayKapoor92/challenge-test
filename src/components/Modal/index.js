@@ -79,10 +79,12 @@ const ModalActionsContainer = styled.div `
 export const ModalActions = ({onAgree, onDisagree, labels = {deny: "", accept: ""}}) => {
   return (
     <ModalActionsContainer>
-      <ButtonDanger 
-        label={labels.deny.length > 0 ? labels.deny : "Não"} 
-        onClick={onDisagree} 
-      />
+      {onDisagree && (
+        <ButtonDanger 
+          label={labels.deny.length > 0 ? labels.deny : "Não"} 
+          onClick={onDisagree} 
+        />
+      )}
       <ButtonDefault
         label={labels.accept.length > 0 ? labels.accept : "Sim"} 
         onClick={onAgree}
@@ -91,7 +93,7 @@ export const ModalActions = ({onAgree, onDisagree, labels = {deny: "", accept: "
   )
 }
 
-const Modal = ({open, title, content, onClose, onAgree, onDisagree, ModalContentView, disableActions}) => {
+const Modal = ({open, title, content, onClose, onAgree, onDisagree, ModalContentView, disableActions, labels = {deny: "", accept: ""}}) => {
   const [_self, _setSelf] = useState({
     status: "closed" // closed || closing || opening || opened
   });
@@ -137,9 +139,10 @@ const Modal = ({open, title, content, onClose, onAgree, onDisagree, ModalContent
         {ModalContentView && ModalContentView}
         {!ModalContentView && <ModalContent content={content} />}
         {!disableActions && (
-          <ModalActions 
+          <ModalActions
             onAgree={onAgree}
             onDisagree={onDisagree}
+            labels={labels}
           />
         )}
       </ModalWindow>
