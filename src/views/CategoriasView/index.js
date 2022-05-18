@@ -18,6 +18,32 @@ import { CategoriasAPI, ProdutosAPI } from "../../api";
 import * as Utils from "../../utils";
 import styled, { css } from "styled-components";
 
+const PageHeader = styled.div.attrs(props => ({
+  children: (
+    <Container>
+      <ButtonDefault
+        label="Adicionar categoria"
+        onClick={props.onOpenModal}
+        outlined
+      />
+    </Container>
+  )
+}))`
+  padding-top: 1rem; 
+  padding-bottom: 1rem; 
+  position: sticky; 
+  top: 56px; 
+  background-color: #FAFAFA; 
+  z-index: 50;
+
+  ${props => {
+    if (props.elevate)
+      return css `
+        box-shadow: 0 5px 0 0 rgba(0,0,0,.2);
+      `;
+  }}
+`;
+
 function CategoriasView() {
   const [loading, setLoading] = useState("loading");             // idle || loading
   const [importID, setImportID] = useState(null);
@@ -51,6 +77,25 @@ function CategoriasView() {
       })
       .catch(err => console.error(err));
   }, []);
+
+  const [elevate, setElevate] = useState(false);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
+
+  const handleScroll = () => {
+    let doIt = null;
+    if (window.scrollY > 66)
+      doIt = true;
+    else
+      doIt = false;
+    
+    setElevate(doIt);
+  }
 
   const validate = input => {
     if (input.value.length === 0) {
@@ -218,15 +263,15 @@ function CategoriasView() {
 
   return (
     <div>
-      <div style={{marginBottom: 16}}>
-        <ButtonDefault
-          label="Adicionar categoria"
-          onClick={handleOpenModalAdd}
-          outlined
         />
       </div>
 
       <div>
+      <PageHeader
+        elevate={elevate}
+        onOpenModal={handleOpenModalAdd}
+      />
+
         {loading === "loading" && (
           <div style={{display: "flex", gap: 16}}>
             {[1,2,3].map(i => (
