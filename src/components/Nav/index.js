@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import Container from "../Container";
 
 const links = ([

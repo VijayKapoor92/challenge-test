@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { VscTag } from "react-icons/vsc";
-import { BsCurrencyDollar } from "react-icons/bs";
 
 import { 
   Card, 
