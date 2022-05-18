@@ -110,8 +110,6 @@ function ProdutosView() {
     setElevate(doIt);
   }
 
-  console.log(elevate);
-
   const validate = fieldsValues => {
     const keys = Object.keys(fieldsValues);
     let bo = true;
