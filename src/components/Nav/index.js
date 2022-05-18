@@ -1,24 +1,78 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
 
 const links = ([
   { name: "Categorias", to: "/" },
   { name: "Produtos", to: "/produtos" }
 ]);
 
+const Header = styled.header `
+  width: 100%;
+`;
+
+const Toolbar = styled.div `
+  height: 56px;
+  margin-bottom: 1rem;
+
+  display: flex;
+  align-items: center;
+`;
+
+const TabLink = styled(Link) `
+  padding: 5px 0;
+
+  border-bottom: 3px solid transparent;
+  color: #757575;
+  
+  min-width: 90px;
+  max-width: 120px;
+  
+  text-decoration: none;
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 500;
+
+  transition: all 150ms ease-in-out;
+
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
+
+  &.active {
+    border-color: #607D8B;
+    color: #000000;
+  }
+
+  &:focus {
+    color: #000000;
+  }
+`;
+
 const Nav = () => {
+  const location = useLocation();
+
+  const getTitle = () => {
+    const path = location.pathname;
+    if (path.includes("produtos"))
+      return "Produtos";
+    
+    return "Categorias";
+  }
+  
+  const title = getTitle();
+
   return (
-    <nav>
-      <ul>
+    <Header>
+      <Toolbar>
         {links.map(link => (
-          <li key={link.name}>
-            <Link to={link.to}>
-              {link.name}
-            </Link>
-          </li>
+          <TabLink key={link.name} to={link.to} className={link.name === title ? "active" : ""}>
+            {link.name}
+          </TabLink>
         ))}
-      </ul>
-    </nav>
+      </Toolbar>
+    </Header>
   )
 }
 
