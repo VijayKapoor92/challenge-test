@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { VscTag } from "react-icons/vsc";
+import { BsCurrencyDollar } from "react-icons/bs";
 
 import { 
   Card, 
@@ -36,7 +38,9 @@ const CardHeaderImage = styled.div `
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-end
+  justify-content: flex-end;
+
+  margin-bottom: .2rem;
 `;
 
 const Title = styled.div `
@@ -47,6 +51,9 @@ const Title = styled.div `
 
   margin-left: 5px;
   margin-bottom: 5px;
+
+  display: flex;
+  align-items: center;
 
   /*text-overflow: ellipsis;
   overflow: hidden;
@@ -72,16 +79,16 @@ export const ProdutoCardSkeleton = () => {
   return (
     <div style={{width: 200, border: "1px solid #ccc"}}>
       <Skeleton width="100%" height="150px" style={{marginBottom: 15, position: "relative"}}>
-        <div style={{position: "absolute", top: 5, right: 5, width: 25, height: 25, borderRadius: "50%", backgroundColor: "white"}} />
-        <div style={{position: "absolute", bottom: 5, left: 5, width: "65%", height: 15, backgroundColor: "white"}} />
+        <div style={{position: "absolute", top: 5, right: 5, width: 15, height: 20, borderRadius: 3, backgroundColor: "white"}} />
+        <div style={{position: "absolute", bottom: 5, left: 5, width: "45%", height: 25, backgroundColor: "white"}} />
       </Skeleton>
       <div style={{paddingLeft: 5, paddingRight: 5}}>
-        <Skeleton width="75%" height="17px" style={{marginBottom: 10}} />
-        <Skeleton width="45%" height="15px" />
+        <Skeleton width="65%" height="17px" style={{marginBottom: 10}} />
+        <Skeleton width="85%" height="15px" />
       </div>
       <div style={{marginTop: 20, paddingLeft: 5, paddingRight: 5, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-        <Skeleton width="50%" height="20px" style={{marginBottom: 15}} />
-        <Skeleton width="50%" height="20px" style={{marginBottom: 5}} />
+        <Skeleton width="50%" height="15px" style={{marginBottom: 10}} />
+        <Skeleton width="50%" height="15px" style={{marginBottom: 15}} />
       </div>
     </div>
   )
@@ -114,15 +121,24 @@ export const ProdutosCardList = (props) => {
             <Card>
               <CardHeaderImage image={img_not_found}>
                 <FadedOverlay />
-                <Title>{produto.nm_produto}</Title>
-                <Badge />
-                <div style={{position: "absolute", top: 5, right: 5, backgroundColor: getBadgeColor(produto.qt_produto), fontSize: "small", padding: "3px 6px", borderRadius: 3, color: "white"}}>
-                  {produto.qt_produto}
-                </div>
+                <Title>
+                  <div style={{fontSize: "1.5rem", color: "#FFFFFF", width: "100%"}}>
+                    <span style={{fontSize: "1rem", color: "#FFFFFF", fontWeight: 600}}>
+                      R$
+                    </span>
+                    {produto.vl_produto}
+                  </div>
+                </Title>
+                <Badge value={produto.qt_produto}/>
               </CardHeaderImage>
               <div style={{paddingLeft: 5, paddingRight: 5}}>
-                <div>{produto.nm_categoria}</div>
-                <div>R${produto.vl_produto}</div>
+                <div style={{display: "flex", alignItems: "center", marginBottom: 10}}>
+                  <VscTag style={{fontSize: "1.2rem", marginRight: ".3rem", color: "#616161"}} />
+                  <span style={{fontWeight: 500}}>{produto.nm_categoria}</span>
+                </div>
+                <div style={{fontSize: "1rem", color: "#616161", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
+                  {produto.nm_produto}
+                </div>
               </div>
               <CardActions>
                 <ButtonDefault 
