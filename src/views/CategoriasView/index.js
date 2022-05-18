@@ -217,7 +217,6 @@ function CategoriasView() {
   return (
     <div>
       <div style={{marginBottom: 16}}>
-        <h4 style={{margin: 0, marginBottom: 5}}>Categorias</h4>
         <ButtonDefault
           label="Adicionar categoria"
           onClick={handleOpenModalAdd}

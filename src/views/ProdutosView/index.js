@@ -162,7 +162,6 @@ function ProdutosView() {
   return (
     <div>
       <div style={{marginBottom: 16}}>
-        <h4 style={{margin: 0, marginBottom: 5}}>Produtos</h4>
         <ButtonDefault 
           label="Adicionar produto" 
           onClick={handleOpenModalAdd}
