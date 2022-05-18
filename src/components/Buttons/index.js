@@ -39,6 +39,7 @@ export const Button = styled.button.attrs(props => ({
 `;
 
 export const ButtonDefault = styled(Button)`
+  background-color: ${props => props.outlined ? "transparent" : "none"};
   border: ${props => props.outlined ? "1px solid #000000" : "none"};
   &:hover {
     background-color: #EEEEEE;
