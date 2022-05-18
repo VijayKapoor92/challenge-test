@@ -5,7 +5,8 @@ import {
   Modal,
   FormGroup,
   ButtonDefault,
-  Feedback
+  Feedback,
+  Container
 } from "../../components";
 
 import { 
@@ -15,6 +16,7 @@ import {
 
 import { CategoriasAPI, ProdutosAPI } from "../../api";
 import * as Utils from "../../utils";
+import styled, { css } from "styled-components";
 
 function CategoriasView() {
   const [loading, setLoading] = useState("loading");             // idle || loading
