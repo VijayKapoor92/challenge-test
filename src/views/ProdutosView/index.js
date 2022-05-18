@@ -79,7 +79,10 @@ function ProdutosView() {
           setLoading("idle");
         }, 1000);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        console.error(err);
+        setProdutos([]);
+      });
   }, []);
 
   useEffect(() => {

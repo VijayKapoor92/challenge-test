@@ -75,7 +75,10 @@ function CategoriasView() {
           setLoading("idle");
         }, 1000);
       })
-      .catch(err => console.error(err));
+      .catch(err => {
+        setCategorias([]);
+        console.error(err);
+      });
   }, []);
 
   const [elevate, setElevate] = useState(false);
