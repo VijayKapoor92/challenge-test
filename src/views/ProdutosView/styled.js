@@ -123,7 +123,7 @@ export const ProdutosCardList = (props) => {
                 <FadedOverlay />
                 <Title>
                   <div style={{fontSize: "1.5rem", color: "#FFFFFF", width: "100%"}}>
-                    <span style={{fontSize: "1rem", color: "#FFFFFF", fontWeight: 600}}>
+                    <span style={{fontSize: "1rem", color: "#FFFFFF", fontWeight: 600, marginRight: 5}}>
                       R$
                     </span>
                     {produto.vl_produto}
@@ -145,6 +145,7 @@ export const ProdutosCardList = (props) => {
                   label="Editar"
                   onClick={() => onEdit(produto)}
                   width="75%"
+                  style={{marginBottom: 10}}
                 />
                 <ButtonDanger 
                   label="Remover"
